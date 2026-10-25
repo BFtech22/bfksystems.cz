@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+<title>Grid compliance (RfG) – simulations and on-site testing | BFK Systems</title>
+<meta name="description" content="Compliance of generating modules with the grid code: simulations in DIgSILENT PowerFactory, on-site testing, documentation for the distribution operator. Categories A1 to D, PV plants and battery storage.">
+<link rel="canonical" href="https://www.bfksystems.cz/en-grid-compliance.html">
+<link rel="alternate" hreflang="cs" href="https://www.bfksystems.cz/simulacni-zkousky.html">
+<link rel="alternate" hreflang="en" href="https://www.bfksystems.cz/en-grid-compliance.html">
+<link rel="alternate" hreflang="de" href="https://www.bfksystems.cz/de-netzkonformitaet.html">
+<link rel="alternate" hreflang="x-default" href="https://www.bfksystems.cz/">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BFK Systems s.r.o.">
+<meta property="og:title" content="Grid compliance (RfG) – simulations and on-site testing">
+<meta property="og:description" content="Compliance of generating modules with the grid code: simulations in DIgSILENT PowerFactory, on-site testing, documentation for the distribution operator. Categories A1 to D, PV plants and battery storage.">
+<meta property="og:url" content="https://www.bfksystems.cz/en-grid-compliance.html">
+<meta property="og:image" content="https://www.bfksystems.cz/assets/title-photo.jpg">
+<meta property="og:locale" content="en_GB">
+<meta name="theme-color" content="#17181A">
+
+<link rel="preload" href="assets/fonts/roboto-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/roboto-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.bfksystems.cz/en.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Grid compliance"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do we need testing for a plant below 100 kW?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Modules in categories A1 and A2 are normally proven by documentation and an equipment certificate, not by on-site testing. The connection agreement and the operator's current rules decide."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do you need from us to start?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The connection agreement, the single-line diagram, inverter and protection data sheets and the protection settings. For testing we also agree a date when the plant can be operated freely for a few hours."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you also handle the communication with the distribution operator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We prepare the evidence in the required form and resolve comments with the operator until the module is approved."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a battery storage system need the same evidence?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Storage is assessed as a generating module too, and the verification covers both directions of power flow – charging and discharging."
+      }
+    }
+  ]
+}
+</script>
+</head>
+
+<body>
+<a class="skip-link" href="#obsah">Skip to main content</a>
+<!-- HLAVICKA (generovano z nastroje/build.py) -->
+<header class="site-header">
+  <div class="container row">
+    <div class="brand-wrap">
+      <a class="brand" href="en.html" aria-label="BFK Systems – home">
+        <picture>
+          <source type="image/webp" srcset="assets/bfk-logo-white-210.webp 210w, assets/bfk-logo-white-420.webp 420w" sizes="128px">
+          <img src="assets/bfk-logo-white-420.png" alt="BFK Systems s.r.o." width="420" height="170" srcset="assets/bfk-logo-white-210.png 210w, assets/bfk-logo-white-420.png 420w" sizes="128px">
+        </picture>
+      </a>
+    </div>
+    <nav class="primary" aria-label="Main navigation">
+      <div class="has-sub">
+        <button class="sub-toggle" type="button" aria-expanded="false">
+          Services <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="sub">
+          <a href="en-services.html">Services overview</a>
+          <a href="en-services.html#commissioning">PV commissioning</a>
+          <a href="en-services.html#rizeni">Dispatch control and balancing</a>
+          <a href="en-services.html#vn">MV switchgear and substations</a>
+          <a href="en-services.html#fve">Commercial and utility-scale PV</a>
+          <a href="en-services.html#servis">Service and maintenance</a>
+        </div>
+      </div>
+      <a class="active" href="en-grid-compliance.html" aria-current="page">Grid compliance</a>
+      <a href="en-battery-storage.html">Battery storage</a>
+      <a href="en-references.html">References</a>
+      <a href="en-about.html">About us</a>
+      <a href="en-contact.html">Contact</a>
+      <a class="header-cta" href="en-contact.html#formular"><span class="dlouhy">Request a quote</span><span class="kratky">Enquiry</span></a>
+    </nav>
+    <div class="lang" role="navigation" aria-label="Language"><a href="simulacni-zkousky.html" lang="cs" hreflang="cs" title="Česky">CS</a><a href="en-grid-compliance.html" lang="en" hreflang="en" title="English" aria-current="true">EN</a><a href="de-netzkonformitaet.html" lang="de" hreflang="de" title="Deutsch">DE</a></div>
+    <button class="hamburger" id="menu-open" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mmenu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mmenu" role="dialog" aria-modal="true" aria-label="Main navigation">
+  <button class="close" id="menu-close" type="button" aria-label="Close menu">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+  <p class="m-group">Services</p>
+  <a class="m-sub" href="en-services.html">Services overview</a>
+  <a class="m-sub" href="en-services.html#commissioning">PV commissioning</a>
+  <a class="m-sub" href="en-services.html#rizeni">Dispatch control and balancing</a>
+  <a class="m-sub" href="en-services.html#vn">MV switchgear and substations</a>
+  <a class="m-sub" href="en-services.html#fve">Commercial and utility-scale PV</a>
+  <a class="m-sub" href="en-services.html#servis">Service and maintenance</a>
+  <a href="en-grid-compliance.html">Grid compliance</a>
+  <a href="en-battery-storage.html">Battery storage</a>
+  <a href="en-references.html">References</a>
+  <a href="en-about.html">About us</a>
+  <a href="en-contact.html">Contact</a>
+  <a class="cta-mobile" href="en-contact.html#formular">Request a quote</a>
+  <div class="m-lang" role="navigation" aria-label="Language"><a href="simulacni-zkousky.html" lang="cs" hreflang="cs" title="Česky">CS</a><a href="en-grid-compliance.html" lang="en" hreflang="en" title="English" aria-current="true">EN</a><a href="de-netzkonformitaet.html" lang="de" hreflang="de" title="Deutsch">DE</a></div>
+</div>
+<main id="obsah">
+<section class="block page-head">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Drobečková navigace">
+      <a href="en.html">Home</a> <span>›</span>
+      <span aria-current="page">Grid compliance</span>
+    </nav>
+    <div class="section-head">
+      <p class="eyebrow">Compliance</p>
+      <h1>Grid compliance and RfG testing</h1>
+      <p class="h1-claim">Simulation, on-site testing and the paperwork that goes with it.</p>
+      <p>Every generating module connected to the Czech grid has to prove that it meets the requirements of the European network code RfG and the national grid code. We provide that proof – by simulation, by testing at the plant, or by both.</p>
+    </div>
+    <ul class="anchor-nav">
+      <li><a href="#co">What we do</a></li>
+      <li><a href="#kategorie">Categories</a></li>
+      <li><a href="#cesty">Three routes</a></li>
+      <li><a href="#faq">Questions</a></li>
+    </ul>
+  </div>
+</section>
+<section class="block" id="co">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Scope</p>
+      <h2>What we do for you</h2>
+    </div>
+    <div class="services cols-2">
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-6 3 3 4-7"/></svg>Compliance simulation</h3>
+        <div class="body"><p>A model of the plant in DIgSILENT PowerFactory and the studies required by the distribution operator, with a pass / fail assessment.</p></div>
+      </article>
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>On-site testing</h3>
+        <div class="body"><p>Functional tests on the finished plant with recorded waveforms – for category B1 there are six requirements that cannot be proven any other way.</p></div>
+      </article>
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>Documentation and negotiation</h3>
+        <div class="body"><p>We compile the evidence into the form the operator expects and handle the correspondence until approval.</p></div>
+      </article>
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="17" height="10" rx="2"/><path d="M22 11v2M6 11v2M10 11v2M14 11v2"/></svg>Battery storage</h3>
+        <div class="body"><p>Storage is a generating module as well. Classification and the way compliance is proven follow the current rules of the relevant operator.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+<section class="block alt" id="kategorie">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Rules</p>
+      <h2>Categories of generating modules</h2>
+    </div>
+<p>The scope of verification follows the category of the generating module.</p>    <div class="spec-table">
+      <table>
+        <thead>
+          <tr><th>Category</th><th>Capacity</th><th>On-site tests</th><th>Simulations</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A1</td><td>0.8 kW to 11 kW</td><td>normally no</td><td>normally no</td></tr>
+          <tr><td>A2</td><td>above 11 kW, below 100 kW</td><td>normally no</td><td>normally no</td></tr>
+          <tr><td>B1</td><td>100 kW to below 1 MW</td><td>yes</td><td>selected points</td></tr>
+          <tr><td>B2</td><td>1 MW to below 30 MW</td><td>yes</td><td>wider scope</td></tr>
+          <tr><td>C</td><td>30 MW to below 75 MW</td><td>yes</td><td>widest scope</td></tr>
+          <tr><td>D</td><td>from 75 MW, or connection at 110 kV</td><td>yes</td><td>widest scope</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="spec-note"><b>The category is stated in the connection agreement</b> and that document always prevails.</p>
+    <p class="spec-note"><b>Mind the units:</b> the kWp of the panels is not the figure that determines the category. What counts is the rated active power of the generating module – 698 kWp of panels can be a module with P<sub>n</sub> 550 kW.</p>
+  </div>
+</section>
+<section class="block" id="cesty">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Key concept</p>
+      <h2>Three routes to proving a requirement</h2>
+    </div>
+    <div class="services">
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>On-site test</h3>
+        <div class="body"><p>Verification on the finished plant and a test report. Some requirements cannot be proven in any other way.</p></div>
+      </article>
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-6 3 3 4-7"/></svg>Simulation</h3>
+        <div class="body"><p>A model of the plant and a report with a pass / fail assessment. For category B2 and above the scope of simulation is considerably wider.</p></div>
+      </article>
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 8.3-8 9.5C7.2 20.3 4 16.5 4 12V6z"/><path d="m9 12 2 2 4-4"/></svg>Equipment certificate</h3>
+        <div class="body"><p>Issued by a certification body for a specific device. Our test or simulation report is not a certificate; a certificate replaces a test only where the generating module document allows it.</p></div>
+      </article>
+    </div>    <div class="seg-note">
+      <p>Categories, operators, deadlines and the required documents are described in detail on our dedicated website.</p>
+      <a class="btn btn-primary" href="https://www.simulacni-zkousky.cz/" target="_blank" rel="noopener">Go to simulacni-zkousky.cz</a>
+    </div>
+  </div>
+</section>
+<section class="block" id="faq">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Ptáte se</p>
+      <h2>Frequently asked questions</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Do we need testing for a plant below 100 kW?</summary>
+        <div class="answer"><p>Modules in categories A1 and A2 are normally proven by documentation and an equipment certificate, not by on-site testing. The connection agreement and the operator's current rules decide.</p></div>
+      </details>
+      <details>
+        <summary>What do you need from us to start?</summary>
+        <div class="answer"><p>The connection agreement, the single-line diagram, inverter and protection data sheets and the protection settings. For testing we also agree a date when the plant can be operated freely for a few hours.</p></div>
+      </details>
+      <details>
+        <summary>Do you also handle the communication with the distribution operator?</summary>
+        <div class="answer"><p>Yes. We prepare the evidence in the required form and resolve comments with the operator until the module is approved.</p></div>
+      </details>
+      <details>
+        <summary>Does a battery storage system need the same evidence?</summary>
+        <div class="answer"><p>Storage is assessed as a generating module too, and the verification covers both directions of power flow – charging and discharging.</p></div>
+      </details>
+    </div>
+  </div>
+</section><section class="block">
+  <div class="container">
+    <div class="crosslinks">
+      <span class="t">Related pages</span>
+      <a href="en-services.html">Services</a>
+      <a href="en-battery-storage.html">Battery storage</a>
+      <a href="en-references.html">References</a>
+    </div>
+  </div>
+</section>
+<section class="contact-section" id="poptavka">
+  <div class="bg"><picture>
+    <source type="image/webp" srcset="assets/title-photo-1024.webp 1024w, assets/title-photo.webp 2048w" sizes="(max-width: 980px) 100vw, 33vw">
+    <img src="assets/title-photo.jpg" alt="" aria-hidden="true" loading="lazy" width="2048" height="1536" srcset="assets/title-photo-1024.jpg 1024w, assets/title-photo.jpg 2048w" sizes="(max-width: 980px) 100vw, 33vw">
+  </picture></div>
+  <div class="container contact-grid">
+    <div class="contact-aside">
+      <p class="eyebrow">Enquiry</p>
+      <h2>Got a project?<br>Let's go through it.</h2>
+      <p>Looking for a partner or a second opinion? Tell us what you are solving – we reply within two working days.</p>
+      <div class="quick">
+        <a href="tel:+420776111100">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.35 1.79.68 2.64a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.44-1.25a2 2 0 0 1 2.11-.45c.85.33 1.74.56 2.64.68A2 2 0 0 1 22 16.92z"/></svg></span>
+          +420 776 111 100
+        </a>
+        <a href="mailto:info@bfksystems.cz">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+          info@bfksystems.cz
+        </a>
+      </div>
+      <div class="firm">
+        <b>BFK Systems s.r.o.</b><br>
+        Obchodní 455/12, Děčín V-Rozbělesy, 405 02 Děčín<br>
+        Company ID 23571853 · VAT ID CZ23571853
+      </div>
+    </div>
+    <div class="contact-form-card">
+      <h3 style="margin:0 0 14px;font-size:20px;color:#222">What to tell us</h3>
+      <p style="margin:0 0 18px;font-size:15px">The more we know up front, the more precise our answer is. Useful details: site location, plant or storage capacity, the distribution operator and your target date.</p>
+      <a class="btn btn-primary" href="en-contact.html#formular">Go to the enquiry form</a>
+    </div>
+  </div>
+</section>
+</main>
+<!-- PATICKA EN -->
+<footer class="site">
+  <div class="container grid">
+    <div class="logo-cell">
+      <picture>
+          <source type="image/webp" srcset="assets/bfk-logo-white-210.webp 210w, assets/bfk-logo-white-420.webp 420w" sizes="150px">
+          <img src="assets/bfk-logo-white-420.png" alt="BFK Systems s.r.o." width="420" height="170" srcset="assets/bfk-logo-white-210.png 210w, assets/bfk-logo-white-420.png 420w" sizes="150px">
+        </picture>
+      <span class="foot-claim">Partner for utility-scale PV projects and battery storage across Czechia.</span>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <div><span class="lbl">Tel</span><a href="tel:+420776111100" style="display:inline">+420 776 111 100</a></div>
+      <div><span class="lbl">Mail</span><a href="mailto:info@bfksystems.cz" style="display:inline">info@bfksystems.cz</a></div>
+      <div style="margin-top:10px">Obchodní 455/12<br>Děčín V-Rozbělesy<br>405 02 Děčín</div>
+      <div style="margin-top:10px">Company ID 23571853<br>VAT ID CZ23571853</div>
+    </div>
+    <div>
+      <h4>Services</h4>
+      <a href="en-services.html#commissioning">PV commissioning</a>
+      <a href="en-services.html#rizeni">Dispatch control and balancing</a>
+      <a href="en-services.html#vn">MV switchgear and substations</a>
+      <a href="en-services.html#fve">Commercial and utility-scale PV</a>
+      <a href="en-services.html#servis">Service and maintenance</a>
+      <a href="en-grid-compliance.html">Grid compliance</a>
+      <a href="en-battery-storage.html">Battery storage</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="en-references.html">References</a>
+      <a href="en-about.html">About us</a>
+      <a href="en-contact.html">Contact</a>
+      <h4 class="dalsi">Our websites</h4>
+      <a href="https://www.simulacni-zkousky.cz/" target="_blank" rel="noopener">simulacni-zkousky.cz</a>
+      <a href="https://www.bftechnology.cz/" target="_blank" rel="noopener">bftechnology.cz</a>
+    </div>
+  </div>
+  <div class="copy">
+    <div class="container row">
+      <span>© <span id="year">2026</span> BFK Systems s.r.o. – all rights reserved</span>
+      <span><a href="en-privacy.html">Privacy policy</a></span>
+      <span>www.bfksystems.cz</span>
+    </div>
+  </div>
+</footer>
+
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<script src="assets/nav.js"></script>
+
+</body>
+</html>

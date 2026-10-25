@@ -7,37 +7,117 @@
   </url>
   <url>
     <loc>https://www.bfksystems.cz/sluzby.html</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-25</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.bfksystems.cz/simulacni-zkousky.html</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-25</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.bfksystems.cz/bateriova-uloziste.html</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-25</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.bfksystems.cz/reference.html</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-25</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.bfksystems.cz/o-nas.html</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-25</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.bfksystems.cz/kontakt.html</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-25</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.bfksystems.cz/zasady-zpracovani-osobnich-udaju.html</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-25</lastmod>
     <priority>0.2</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/en.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/en-services.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/en-grid-compliance.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/en-battery-storage.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/en-references.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/en-about.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/en-contact.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/en-privacy.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/de.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/de-leistungen.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/de-netzkonformitaet.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/de-batteriespeicher.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/de-referenzen.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/de-ueber-uns.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/de-kontakt.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bfksystems.cz/de-datenschutz.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.3</priority>
   </url>
 </urlset>

@@ -21,6 +21,7 @@ from datetime import date
 from pathlib import Path
 
 import obsah
+import obsah_cizi
 
 KOREN = Path(__file__).resolve().parent.parent
 DOMENA = "https://www.bfksystems.cz"
@@ -51,20 +52,107 @@ NAV = [
     ("Kontakt", "kontakt", "kontakt.html"),
 ]
 
-# Prepinac jazyku. EN a DE zatim vedou na zastupne stranky („verzi pripravujeme“),
-# ktere se neindexuji – az budou preklady, nahradi je plne verze.
-JAZYKY = [("cs", "CS", "index.html", "Česky"),
-          ("en", "EN", "en.html", "English"),
-          ("de", "DE", "de.html", "Deutsch")]
+NAV_EN = [
+    ("Services", "sluzby", [
+        ("Services overview", "en-services.html"),
+        ("PV commissioning", "en-services.html#commissioning"),
+        ("Dispatch control and balancing", "en-services.html#rizeni"),
+        ("MV switchgear and substations", "en-services.html#vn"),
+        ("Commercial and utility-scale PV", "en-services.html#fve"),
+        ("Service and maintenance", "en-services.html#servis"),
+    ]),
+    ("Grid compliance", "rfg", "en-grid-compliance.html"),
+    ("Battery storage", "bess", "en-battery-storage.html"),
+    ("References", "reference", "en-references.html"),
+    ("About us", "onas", "en-about.html"),
+    ("Contact", "kontakt", "en-contact.html"),
+]
+
+NAV_DE = [
+    ("Leistungen", "sluzby", [
+        ("Überblick", "de-leistungen.html"),
+        ("Inbetriebnahme von PV-Anlagen", "de-leistungen.html#commissioning"),
+        ("Leitstellenanbindung und Regelleistung", "de-leistungen.html#rizeni"),
+        ("Mittelspannung und Trafostationen", "de-leistungen.html#vn"),
+        ("Gewerbliche und große PV-Anlagen", "de-leistungen.html#fve"),
+        ("Service und Wartung", "de-leistungen.html#servis"),
+    ]),
+    ("Netzkonformität", "rfg", "de-netzkonformitaet.html"),
+    ("Batteriespeicher", "bess", "de-batteriespeicher.html"),
+    ("Referenzen", "reference", "de-referenzen.html"),
+    ("Über uns", "onas", "de-ueber-uns.html"),
+    ("Kontakt", "kontakt", "de-kontakt.html"),
+]
+
+NAVIGACE = {"cs": NAV, "en": NAV_EN, "de": NAV_DE}
+
+# Protejsky stranek mezi jazyky – podle nich se sklada prepinac i hreflang.
+EKVIVALENTY = [
+    ("index.html", "en.html", "de.html"),
+    ("sluzby.html", "en-services.html", "de-leistungen.html"),
+    ("simulacni-zkousky.html", "en-grid-compliance.html", "de-netzkonformitaet.html"),
+    ("bateriova-uloziste.html", "en-battery-storage.html", "de-batteriespeicher.html"),
+    ("reference.html", "en-references.html", "de-referenzen.html"),
+    ("o-nas.html", "en-about.html", "de-ueber-uns.html"),
+    ("kontakt.html", "en-contact.html", "de-kontakt.html"),
+    ("zasady-zpracovani-osobnich-udaju.html", "en-privacy.html", "de-datenschutz.html"),
+]
+POZICE = {"cs": 0, "en": 1, "de": 2}
+
+# Popisky sablony v jednotlivych jazycich (menu, paticka, vyzva ke kontaktu).
+TEXTY = {
+    "cs": {"jazyk": "Jazyk", "nav": "Hlavní navigace", "uvod": "Úvod",
+           "cta": "Nezávazná poptávka", "cta_kratky": "Poptávka",
+           "otevrit": "Otevřít menu", "zavrit": "Zavřít menu",
+           "uvodni_stranka": "BFK Systems – úvodní stránka",
+           "paticka_claim": "Partner pro velké FVE projekty a bateriová úložiště po celé ČR.",
+           "kontakt": "Kontakt", "sluzby": "Služby", "spolecnost": "Společnost",
+           "nase_weby": "Naše weby", "prava": "všechna práva vyhrazena",
+           "zasady": "Zásady zpracování osobních údajů", "souvisejici": "Související stránky",
+           "ico": "IČO", "dic": "DIČ", "zeme": "Česká republika"},
+    "en": {"jazyk": "Language", "nav": "Main navigation", "uvod": "Home",
+           "cta": "Request a quote", "cta_kratky": "Enquiry",
+           "otevrit": "Open menu", "zavrit": "Close menu",
+           "uvodni_stranka": "BFK Systems – home",
+           "paticka_claim": "Partner for utility-scale PV projects and battery storage across Czechia.",
+           "kontakt": "Contact", "sluzby": "Services", "spolecnost": "Company",
+           "nase_weby": "Our websites", "prava": "all rights reserved",
+           "zasady": "Privacy policy", "souvisejici": "Related pages",
+           "ico": "Company ID", "dic": "VAT ID", "zeme": "Czech Republic"},
+    "de": {"jazyk": "Sprache", "nav": "Hauptnavigation", "uvod": "Startseite",
+           "cta": "Unverbindliche Anfrage", "cta_kratky": "Anfrage",
+           "otevrit": "Menü öffnen", "zavrit": "Menü schließen",
+           "uvodni_stranka": "BFK Systems – Startseite",
+           "paticka_claim": "Partner für große PV-Projekte und Batteriespeicher in ganz Tschechien.",
+           "kontakt": "Kontakt", "sluzby": "Leistungen", "spolecnost": "Unternehmen",
+           "nase_weby": "Unsere Websites", "prava": "alle Rechte vorbehalten",
+           "zasady": "Datenschutz", "souvisejici": "Verwandte Seiten",
+           "ico": "Firmen-ID (IČO)", "dic": "USt-IdNr.", "zeme": "Tschechische Republik"},
+}
+
+JAZYKY = [("cs", "CS", "Česky"), ("en", "EN", "English"), ("de", "DE", "Deutsch")]
 
 
-def prepinac(aktivni: str, trida: str = "lang") -> str:
+def protejsky(slug: str) -> dict[str, str]:
+    """Pro dany slug vrati slugy stejne stranky ve vsech jazycich."""
+    for radek in EKVIVALENTY:
+        if slug in radek:
+            return {kod: radek[POZICE[kod]] for kod in POZICE}
+    return {kod: radek[POZICE[kod]] for kod in POZICE for radek in [EKVIVALENTY[0]]}
+
+
+def domovska(jazyk: str) -> str:
+    return EKVIVALENTY[0][POZICE[jazyk]]
+
+
+def prepinac(aktivni: str, trida: str = "lang", slug: str = "index.html") -> str:
+    cile = protejsky(slug)
     odkazy = []
-    for kod, zkratka, href, nazev in JAZYKY:
+    for kod, zkratka, nazev in JAZYKY:
         aktualni = ' aria-current="true"' if kod == aktivni else ""
-        odkazy.append(f'<a href="{href}" lang="{kod}" hreflang="{kod}" title="{nazev}"{aktualni}>{zkratka}</a>')
-    popis = {"cs": "Jazyk", "en": "Language", "de": "Sprache"}[aktivni]
-    return f'<div class="{trida}" role="navigation" aria-label="{popis}">' + "".join(odkazy) + "</div>"
+        odkazy.append(f'<a href="{cile[kod]}" lang="{kod}" hreflang="{kod}" title="{nazev}"{aktualni}>{zkratka}</a>')
+    return (f'<div class="{trida}" role="navigation" aria-label="{TEXTY[aktivni]["jazyk"]}">'
+            + "".join(odkazy) + "</div>")
 
 
 # Hlavicka i paticka jsou tmave (tema „technicky, tmavy“) – proto bile logo.
@@ -78,10 +166,12 @@ IKONA_MAIL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
 
 
 # ------------------------------------------------------------- sablona -----
-def hlavicka(aktivni: str) -> str:
+def hlavicka(aktivni: str, jazyk: str = "cs", slug: str = "index.html") -> str:
     """Sticky hlavicka s rozbalovacim menu sluzeb."""
+    t = TEXTY[jazyk]
+    kontakt_slug = protejsky("kontakt.html")[jazyk]
     polozky = []
-    for nazev, klic, cil in NAV:
+    for nazev, klic, cil in NAVIGACE[jazyk]:
         if isinstance(cil, str):
             tridy = ' class="active"' if klic == aktivni else ""
             aria = ' aria-current="page"' if klic == aktivni else ""
@@ -101,37 +191,37 @@ def hlavicka(aktivni: str) -> str:
     menu = "\n".join(polozky)
 
     mobil = []
-    for nazev, _klic, cil in NAV:
+    for nazev, _klic, cil in NAVIGACE[jazyk]:
         if isinstance(cil, str):
             mobil.append(f'  <a href="{cil}">{nazev}</a>')
         else:
             mobil.append(f'  <p class="m-group">{nazev}</p>')
             mobil.extend(f'  <a class="m-sub" href="{href}">{txt}</a>' for txt, href in cil)
-    mobil.append('  <a class="cta-mobile" href="kontakt.html#formular">Nezávazná poptávka</a>')
-    mobil.append("  " + prepinac("cs", "m-lang"))
+    mobil.append(f'  <a class="cta-mobile" href="{kontakt_slug}#formular">{t["cta"]}</a>')
+    mobil.append("  " + prepinac(jazyk, "m-lang", slug))
     mobilni = "\n".join(mobil)
 
     return f"""<!-- HLAVICKA (generovano z nastroje/build.py) -->
 <header class="site-header">
   <div class="container row">
     <div class="brand-wrap">
-      <a class="brand" href="index.html" aria-label="BFK Systems – úvodní stránka">
+      <a class="brand" href="{domovska(jazyk)}" aria-label="{t["uvodni_stranka"]}">
         {LOGO_IMG.format(sizes='128px')}
       </a>
     </div>
-    <nav class="primary" aria-label="Hlavní navigace">
+    <nav class="primary" aria-label="{t["nav"]}">
 {menu}
-      <a class="header-cta" href="kontakt.html#formular"><span class="dlouhy">Nezávazná poptávka</span><span class="kratky">Poptávka</span></a>
+      <a class="header-cta" href="{kontakt_slug}#formular"><span class="dlouhy">{t["cta"]}</span><span class="kratky">{t["cta_kratky"]}</span></a>
     </nav>
-    {prepinac("cs")}
-    <button class="hamburger" id="menu-open" type="button" aria-label="Otevřít menu" aria-expanded="false" aria-controls="mmenu">
+    {prepinac(jazyk, "lang", slug)}
+    <button class="hamburger" id="menu-open" type="button" aria-label="{t["otevrit"]}" aria-expanded="false" aria-controls="mmenu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
   </div>
 </header>
 
-<div class="mobile-menu" id="mmenu" role="dialog" aria-modal="true" aria-label="Hlavní navigace">
-  <button class="close" id="menu-close" type="button" aria-label="Zavřít menu">
+<div class="mobile-menu" id="mmenu" role="dialog" aria-modal="true" aria-label="{t["nav"]}">
+  <button class="close" id="menu-close" type="button" aria-label="{t["zavrit"]}">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
   </button>
 {mobilni}
@@ -139,43 +229,49 @@ def hlavicka(aktivni: str) -> str:
 """
 
 
-def paticka() -> str:
-    sluzby = next(cil for nazev, _k, cil in NAV if nazev == "Služby")
+def paticka(jazyk: str = "cs") -> str:
+    t = TEXTY[jazyk]
+    nav = NAVIGACE[jazyk]
+    pro = lambda cs: protejsky(cs)[jazyk]
+    sluzby = next(cil for _n, klic, cil in nav if klic == "sluzby")
     odkazy_sluzeb = "\n".join(f'      <a href="{href}">{txt}</a>' for txt, href in sluzby[1:])
-    return f"""<!-- PATICKA -->
+    dalsi = [(nazev, cil) for nazev, klic, cil in nav
+             if klic in ("rfg", "bess") and isinstance(cil, str)]
+    odkazy_dalsi = "\n".join(f'      <a href="{href}">{txt}</a>' for txt, href in dalsi)
+    spolecnost = [(nazev, cil) for nazev, klic, cil in nav
+                  if klic in ("reference", "onas", "kontakt") and isinstance(cil, str)]
+    odkazy_spolecnost = "\n".join(f'      <a href="{href}">{txt}</a>' for txt, href in spolecnost)
+    return f"""<!-- PATICKA {jazyk.upper()} -->
 <footer class="site">
   <div class="container grid">
     <div class="logo-cell">
       {LOGO_IMG.format(sizes='150px')}
-      <span class="foot-claim">Partner pro velké FVE projekty a bateriová úložiště po celé ČR.</span>
+      <span class="foot-claim">{t["paticka_claim"]}</span>
     </div>
     <div>
-      <h4>Kontakt</h4>
+      <h4>{t["kontakt"]}</h4>
       <div><span class="lbl">Tel</span><a href="tel:{TEL_HREF}" style="display:inline">{TEL}</a></div>
       <div><span class="lbl">Mail</span><a href="mailto:{MAIL}" style="display:inline">{MAIL}</a></div>
       <div style="margin-top:10px">Obchodní 455/12<br>Děčín V-Rozbělesy<br>405 02 Děčín</div>
-      <div style="margin-top:10px">IČO 23571853<br>DIČ CZ23571853</div>
+      <div style="margin-top:10px">{t["ico"]} 23571853<br>{t["dic"]} CZ23571853</div>
     </div>
     <div>
-      <h4>Služby</h4>
+      <h4>{t["sluzby"]}</h4>
 {odkazy_sluzeb}
-      <a href="simulacni-zkousky.html">Simulační zkoušky</a>
-      <a href="bateriova-uloziste.html">Bateriová úložiště</a>
+{odkazy_dalsi}
     </div>
     <div>
-      <h4>Společnost</h4>
-      <a href="reference.html">Reference</a>
-      <a href="o-nas.html">O nás</a>
-      <a href="kontakt.html">Kontakt</a>
-      <h4 class="dalsi">Naše weby</h4>
+      <h4>{t["spolecnost"]}</h4>
+{odkazy_spolecnost}
+      <h4 class="dalsi">{t["nase_weby"]}</h4>
       <a href="{WEB_SZ}" target="_blank" rel="noopener">simulacni-zkousky.cz</a>
       <a href="{WEB_BFT}" target="_blank" rel="noopener">bftechnology.cz</a>
     </div>
   </div>
   <div class="copy">
     <div class="container row">
-      <span>© <span id="year">{date.today().year}</span> {FIRMA} – všechna práva vyhrazena</span>
-      <span><a href="zasady-zpracovani-osobnich-udaju.html">Zásady zpracování osobních údajů</a></span>
+      <span>© <span id="year">{date.today().year}</span> {FIRMA} – {t["prava"]}</span>
+      <span><a href="{pro("zasady-zpracovani-osobnich-udaju.html")}">{t["zasady"]}</a></span>
       <span>www.bfksystems.cz</span>
     </div>
   </div>
@@ -234,10 +330,13 @@ def paticka_cizi(jazyk: str) -> str:
 """
 
 
-def drobecky(cesta: list[tuple[str, str]], nazev: str) -> tuple[str, str]:
+def drobecky(cesta: list[tuple[str, str]], nazev: str, jazyk: str = "cs") -> tuple[str, str]:
     """HTML drobeckove navigace + JSON-LD BreadcrumbList."""
-    kusy = ['      <a href="index.html">Úvod</a> <span>›</span>']
-    body = [{"@type": "ListItem", "position": 1, "name": "Úvod", "item": f"{DOMENA}/"}]
+    dom = domovska(jazyk)
+    uvod = TEXTY[jazyk]["uvod"]
+    adresa = f"{DOMENA}/" if jazyk == "cs" else f"{DOMENA}/{dom}"
+    kusy = [f'      <a href="{dom}">{uvod}</a> <span>›</span>']
+    body = [{"@type": "ListItem", "position": 1, "name": uvod, "item": adresa}]
     for i, (txt, href) in enumerate(cesta, start=2):
         kusy.append(f'      <a href="{href}">{txt}</a> <span>›</span>')
         body.append({"@type": "ListItem", "position": i, "name": txt, "item": f"{DOMENA}/{href}"})
@@ -351,8 +450,9 @@ def stranka(p: dict) -> str:
     titulek = p["title"] if slug == "index.html" else f'{p["title"]} | {ZNACKA}'
 
     bc_html, bc_ld = ("", "")
-    if p.get("breadcrumb") is not None and slug != "index.html":
-        bc_html, bc_ld = drobecky(p.get("breadcrumb", []), p.get("bc_nazev", p["h1"]))
+    jazyk = p.get("jazyk", "cs")
+    if p.get("breadcrumb") is not None and slug != domovska(jazyk):
+        bc_html, bc_ld = drobecky(p.get("breadcrumb", []), p.get("bc_nazev", p["h1"]), jazyk)
 
     faq_html, faq_ld = faq_blok(p.get("faq", []), p.get("faq_nadpis", "Časté dotazy"))
 
@@ -365,10 +465,17 @@ def stranka(p: dict) -> str:
             ldjson += f'\n<script type="application/ld+json">\n{data}\n</script>'
 
     robots = '\n<meta name="robots" content="noindex">' if p.get("noindex") else ""
-    jazyk = p.get("jazyk", "cs")
     locale = {"cs": "cs_CZ", "en": "en_GB", "de": "de_DE"}[jazyk]
     preskocit = {"cs": "Přeskočit na hlavní obsah", "en": "Skip to main content",
                  "de": "Zum Hauptinhalt springen"}[jazyk]
+    cile = protejsky(slug)
+    alternativy = ""
+    for kod in ("cs", "en", "de"):
+        cil = cile[kod]
+        adresa = f"{DOMENA}/" if cil == "index.html" else f"{DOMENA}/{cil}"
+        alternativy += f'\n<link rel="alternate" hreflang="{kod}" href="{adresa}">'
+    alternativy += f'\n<link rel="alternate" hreflang="x-default" href="{DOMENA}/">'
+
     hlava = f"""<!DOCTYPE html>
 <html lang="{jazyk}">
 <head>
@@ -376,7 +483,7 @@ def stranka(p: dict) -> str:
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
 <title>{titulek}</title>
 <meta name="description" content="{html.escape(p["desc"], quote=True)}">{robots}
-<link rel="canonical" href="{url}">
+<link rel="canonical" href="{url}">{alternativy}
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/favicon.png">
 
@@ -429,7 +536,7 @@ def stranka(p: dict) -> str:
         cross = f"""<section class="block{' alt' if p.get('cross_alt') else ''}">
   <div class="container">
     <div class="crosslinks">
-      <span class="t">Související stránky</span>
+      <span class="t">{TEXTY[jazyk]["souvisejici"]}</span>
 {odkazy}
     </div>
   </div>
@@ -443,26 +550,45 @@ def stranka(p: dict) -> str:
                  f'    <p class="spec-note"><b>Aktualizováno {datum}.</b> Zdroje: {dokumenty}</p>\n'
                  f'  </div>\n</section>\n')
 
-    kontakt = "" if p.get("bez_kontaktu") else KONTAKT_PRUH
-    if jazyk != "cs":
-        return (hlava + hlavicka_cizi(jazyk, slug) + '<main id="obsah">\n'
-                + uvod + p["body"] + "</main>\n" + paticka_cizi(jazyk) + "\n</body>\n</html>\n")
-    return (hlava + hlavicka(p.get("nav", "")) + '<main id="obsah">\n'
+    kontakt = "" if p.get("bez_kontaktu") else kontakt_pruh(jazyk)
+    return (hlava + hlavicka(p.get("nav", ""), jazyk, slug) + '<main id="obsah">\n'
             + uvod + pruh + p["body"] + faq_html + cross + zdroj + kontakt + "</main>\n"
-            + paticka() + "\n</body>\n</html>\n")
+            + paticka(jazyk) + "\n</body>\n</html>\n")
 
 
 # Vyzva ke kontaktu nad patickou – na kazde strance krome kontaktu.
-KONTAKT_PRUH = f"""<section class="contact-section" id="poptavka">
+VYZVA = {
+    "cs": ("Poptávka", "Máte projekt?<br>Probereme ho.",
+           "Máte zájem o spolupráci nebo potřebujete konzultaci? Napište nám, co řešíte – ozveme se do dvou pracovních dnů.",
+           "Co nám napsat",
+           "Čím více toho víme předem, tím přesněji odpovíme. Hodí se místo realizace, výkon elektrárny nebo úložiště, distributor a termín, se kterým počítáte.",
+           "Přejít na poptávkový formulář"),
+    "en": ("Enquiry", "Got a project?<br>Let's go through it.",
+           "Looking for a partner or a second opinion? Tell us what you are solving – we reply within two working days.",
+           "What to tell us",
+           "The more we know up front, the more precise our answer is. Useful details: site location, plant or storage capacity, the distribution operator and your target date.",
+           "Go to the enquiry form"),
+    "de": ("Anfrage", "Sie haben ein Projekt?<br>Reden wir darüber.",
+           "Sie suchen einen Partner oder eine zweite Meinung? Schreiben Sie uns, worum es geht – wir antworten innerhalb von zwei Arbeitstagen.",
+           "Was uns hilft",
+           "Je mehr wir vorab wissen, desto genauer ist unsere Antwort. Nützlich sind Standort, Leistung der Anlage oder des Speichers, der Verteilnetzbetreiber und Ihr Wunschtermin.",
+           "Zum Anfrageformular"),
+}
+
+
+def kontakt_pruh(jazyk: str = "cs") -> str:
+    eyebrow, nadpis, text, karta_h, karta_p, tlacitko = VYZVA[jazyk]
+    kontakt_slug = protejsky("kontakt.html")[jazyk]
+    return f"""<section class="contact-section" id="poptavka">
   <div class="bg"><picture>
     <source type="image/webp" srcset="assets/title-photo-1024.webp 1024w, assets/title-photo.webp 2048w" sizes="(max-width: 980px) 100vw, 33vw">
     <img src="assets/title-photo.jpg" alt="" aria-hidden="true" loading="lazy" width="2048" height="1536" srcset="assets/title-photo-1024.jpg 1024w, assets/title-photo.jpg 2048w" sizes="(max-width: 980px) 100vw, 33vw">
   </picture></div>
   <div class="container contact-grid">
     <div class="contact-aside">
-      <p class="eyebrow">Poptávka</p>
-      <h2>Máte projekt?<br>Probereme ho.</h2>
-      <p>Máte zájem o spolupráci nebo potřebujete konzultaci? Napište nám, co řešíte – ozveme se do dvou pracovních dnů.</p>
+      <p class="eyebrow">{eyebrow}</p>
+      <h2>{nadpis}</h2>
+      <p>{text}</p>
       <div class="quick">
         <a href="tel:{TEL_HREF}">
           <span class="ico">{IKONA_TEL}</span>
@@ -476,13 +602,13 @@ KONTAKT_PRUH = f"""<section class="contact-section" id="poptavka">
       <div class="firm">
         <b>{FIRMA}</b><br>
         Obchodní 455/12, Děčín V-Rozbělesy, 405 02 Děčín<br>
-        IČO 23571853 · DIČ CZ23571853
+        {TEXTY[jazyk]["ico"]} 23571853 · {TEXTY[jazyk]["dic"]} CZ23571853
       </div>
     </div>
     <div class="contact-form-card">
-      <h3 style="margin:0 0 14px;font-size:20px;color:#222">Co nám napsat</h3>
-      <p style="margin:0 0 18px;font-size:15px">Čím více toho víme předem, tím přesněji odpovíme. Hodí se místo realizace, výkon elektrárny nebo úložiště, distributor a termín, se kterým počítáte.</p>
-      <a class="btn btn-primary" href="kontakt.html#formular">Přejít na poptávkový formulář</a>
+      <h3 style="margin:0 0 14px;font-size:20px;color:#222">{karta_h}</h3>
+      <p style="margin:0 0 18px;font-size:15px">{karta_p}</p>
+      <a class="btn btn-primary" href="{kontakt_slug}#formular">{tlacitko}</a>
     </div>
   </div>
 </section>
@@ -524,7 +650,7 @@ def sitemap(stranky: list[dict]) -> str:
 
 
 def main() -> None:
-    stranky = obsah.PAGES
+    stranky = obsah.PAGES + obsah_cizi.PAGES
     slugy = [p["slug"] for p in stranky]
     if len(slugy) != len(set(slugy)):
         raise SystemExit("duplicitni slug v obsah.PAGES")

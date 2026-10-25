@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+<title>Netzkonformität (RfG) – Simulationen und Vor-Ort-Prüfungen | BFK Systems</title>
+<meta name="description" content="Konformitätsnachweis für Erzeugungsanlagen: Simulationen in DIgSILENT PowerFactory, Vor-Ort-Prüfungen, Dokumentation für den Verteilnetzbetreiber. Kategorien A1 bis D, PV-Anlagen und Batteriespeicher.">
+<link rel="canonical" href="https://www.bfksystems.cz/de-netzkonformitaet.html">
+<link rel="alternate" hreflang="cs" href="https://www.bfksystems.cz/simulacni-zkousky.html">
+<link rel="alternate" hreflang="en" href="https://www.bfksystems.cz/en-grid-compliance.html">
+<link rel="alternate" hreflang="de" href="https://www.bfksystems.cz/de-netzkonformitaet.html">
+<link rel="alternate" hreflang="x-default" href="https://www.bfksystems.cz/">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BFK Systems s.r.o.">
+<meta property="og:title" content="Netzkonformität (RfG) – Simulationen und Vor-Ort-Prüfungen">
+<meta property="og:description" content="Konformitätsnachweis für Erzeugungsanlagen: Simulationen in DIgSILENT PowerFactory, Vor-Ort-Prüfungen, Dokumentation für den Verteilnetzbetreiber. Kategorien A1 bis D, PV-Anlagen und Batteriespeicher.">
+<meta property="og:url" content="https://www.bfksystems.cz/de-netzkonformitaet.html">
+<meta property="og:image" content="https://www.bfksystems.cz/assets/title-photo.jpg">
+<meta property="og:locale" content="de_DE">
+<meta name="theme-color" content="#17181A">
+
+<link rel="preload" href="assets/fonts/roboto-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/roboto-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Startseite",
+      "item": "https://www.bfksystems.cz/de.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Netzkonformität"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Braucht eine Anlage unter 100 kW eine Prüfung?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Anlagen der Kategorien A1 und A2 werden in der Regel über Dokumentation und Anlagenzertifikat nachgewiesen, nicht über Vor-Ort-Prüfungen. Entscheidend sind der Netzanschlussvertrag und die aktuellen Regeln des Netzbetreibers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Was brauchen Sie von uns für den Start?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Netzanschlussvertrag, einpoliges Schema, Datenblätter von Wechselrichtern und Schutzeinrichtungen sowie die Schutzparameter. Für Prüfungen vereinbaren wir zusätzlich einen Termin, an dem die Anlage einige Stunden frei gefahren werden kann."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Übernehmen Sie auch die Abstimmung mit dem Netzbetreiber?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Wir bereiten die Nachweise in der geforderten Form auf und klären Rückfragen bis zur Freigabe der Anlage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Gilt für Batteriespeicher dasselbe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ein Speicher wird ebenfalls als Erzeugungsanlage bewertet, der Nachweis umfasst beide Leistungsrichtungen – Laden und Entladen."
+      }
+    }
+  ]
+}
+</script>
+</head>
+
+<body>
+<a class="skip-link" href="#obsah">Zum Hauptinhalt springen</a>
+<!-- HLAVICKA (generovano z nastroje/build.py) -->
+<header class="site-header">
+  <div class="container row">
+    <div class="brand-wrap">
+      <a class="brand" href="de.html" aria-label="BFK Systems – Startseite">
+        <picture>
+          <source type="image/webp" srcset="assets/bfk-logo-white-210.webp 210w, assets/bfk-logo-white-420.webp 420w" sizes="128px">
+          <img src="assets/bfk-logo-white-420.png" alt="BFK Systems s.r.o." width="420" height="170" srcset="assets/bfk-logo-white-210.png 210w, assets/bfk-logo-white-420.png 420w" sizes="128px">
+        </picture>
+      </a>
+    </div>
+    <nav class="primary" aria-label="Hauptnavigation">
+      <div class="has-sub">
+        <button class="sub-toggle" type="button" aria-expanded="false">
+          Leistungen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="sub">
+          <a href="de-leistungen.html">Überblick</a>
+          <a href="de-leistungen.html#commissioning">Inbetriebnahme von PV-Anlagen</a>
+          <a href="de-leistungen.html#rizeni">Leitstellenanbindung und Regelleistung</a>
+          <a href="de-leistungen.html#vn">Mittelspannung und Trafostationen</a>
+          <a href="de-leistungen.html#fve">Gewerbliche und große PV-Anlagen</a>
+          <a href="de-leistungen.html#servis">Service und Wartung</a>
+        </div>
+      </div>
+      <a class="active" href="de-netzkonformitaet.html" aria-current="page">Netzkonformität</a>
+      <a href="de-batteriespeicher.html">Batteriespeicher</a>
+      <a href="de-referenzen.html">Referenzen</a>
+      <a href="de-ueber-uns.html">Über uns</a>
+      <a href="de-kontakt.html">Kontakt</a>
+      <a class="header-cta" href="de-kontakt.html#formular"><span class="dlouhy">Unverbindliche Anfrage</span><span class="kratky">Anfrage</span></a>
+    </nav>
+    <div class="lang" role="navigation" aria-label="Sprache"><a href="simulacni-zkousky.html" lang="cs" hreflang="cs" title="Česky">CS</a><a href="en-grid-compliance.html" lang="en" hreflang="en" title="English">EN</a><a href="de-netzkonformitaet.html" lang="de" hreflang="de" title="Deutsch" aria-current="true">DE</a></div>
+    <button class="hamburger" id="menu-open" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mmenu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mmenu" role="dialog" aria-modal="true" aria-label="Hauptnavigation">
+  <button class="close" id="menu-close" type="button" aria-label="Menü schließen">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+  <p class="m-group">Leistungen</p>
+  <a class="m-sub" href="de-leistungen.html">Überblick</a>
+  <a class="m-sub" href="de-leistungen.html#commissioning">Inbetriebnahme von PV-Anlagen</a>
+  <a class="m-sub" href="de-leistungen.html#rizeni">Leitstellenanbindung und Regelleistung</a>
+  <a class="m-sub" href="de-leistungen.html#vn">Mittelspannung und Trafostationen</a>
+  <a class="m-sub" href="de-leistungen.html#fve">Gewerbliche und große PV-Anlagen</a>
+  <a class="m-sub" href="de-leistungen.html#servis">Service und Wartung</a>
+  <a href="de-netzkonformitaet.html">Netzkonformität</a>
+  <a href="de-batteriespeicher.html">Batteriespeicher</a>
+  <a href="de-referenzen.html">Referenzen</a>
+  <a href="de-ueber-uns.html">Über uns</a>
+  <a href="de-kontakt.html">Kontakt</a>
+  <a class="cta-mobile" href="de-kontakt.html#formular">Unverbindliche Anfrage</a>
+  <div class="m-lang" role="navigation" aria-label="Sprache"><a href="simulacni-zkousky.html" lang="cs" hreflang="cs" title="Česky">CS</a><a href="en-grid-compliance.html" lang="en" hreflang="en" title="English">EN</a><a href="de-netzkonformitaet.html" lang="de" hreflang="de" title="Deutsch" aria-current="true">DE</a></div>
+</div>
+<main id="obsah">
+<section class="block page-head">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Drobečková navigace">
+      <a href="de.html">Startseite</a> <span>›</span>
+      <span aria-current="page">Netzkonformität</span>
+    </nav>
+    <div class="section-head">
+      <p class="eyebrow">Konformität</p>
+      <h1>Netzkonformität und RfG-Prüfungen</h1>
+      <p class="h1-claim">Simulation, Prüfung an der Anlage und der Papierkram dazu.</p>
+      <p>Jede Erzeugungsanlage am tschechischen Netz muss nachweisen, dass sie die Anforderungen der europäischen Verordnung RfG und der nationalen Netzanschlussregeln erfüllt. Diesen Nachweis liefern wir – per Simulation, per Prüfung an der Anlage oder beides.</p>
+    </div>
+    <ul class="anchor-nav">
+      <li><a href="#co">Leistungen</a></li>
+      <li><a href="#kategorie">Kategorien</a></li>
+      <li><a href="#cesty">Drei Wege</a></li>
+      <li><a href="#faq">Fragen</a></li>
+    </ul>
+  </div>
+</section>
+<section class="block" id="co">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Umfang</p>
+      <h2>Was wir für Sie übernehmen</h2>
+    </div>
+    <div class="services cols-2">
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-6 3 3 4-7"/></svg>Simulation</h3>
+        <div class="body"><p>Modell der Anlage in DIgSILENT PowerFactory und die vom Netzbetreiber geforderten Studien mit Bewertung erfüllt / nicht erfüllt.</p></div>
+      </article>
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Vor-Ort-Prüfung</h3>
+        <div class="body"><p>Funktionsprüfungen an der fertigen Anlage mit aufgezeichneten Verläufen – in Kategorie B1 gibt es sechs Anforderungen, die anders nicht nachweisbar sind.</p></div>
+      </article>
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>Dokumentation und Abstimmung</h3>
+        <div class="body"><p>Wir bringen die Nachweise in die Form, die der Netzbetreiber erwartet, und führen den Schriftwechsel bis zur Freigabe.</p></div>
+      </article>
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="17" height="10" rx="2"/><path d="M22 11v2M6 11v2M10 11v2M14 11v2"/></svg>Batteriespeicher</h3>
+        <div class="body"><p>Auch ein Speicher ist eine Erzeugungsanlage. Einstufung und Nachweisweg richten sich nach den aktuellen Regeln des jeweiligen Netzbetreibers.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+<section class="block alt" id="kategorie">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Regeln</p>
+      <h2>Kategorien von Erzeugungsanlagen</h2>
+    </div>
+<p>Der Prüfumfang richtet sich nach der Kategorie der Erzeugungsanlage.</p>    <div class="spec-table">
+      <table>
+        <thead>
+          <tr><th>Kategorie</th><th>Leistung</th><th>Vor-Ort-Prüfungen</th><th>Simulationen</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A1</td><td>0,8 kW bis 11 kW</td><td>in der Regel nein</td><td>in der Regel nein</td></tr>
+          <tr><td>A2</td><td>über 11 kW, unter 100 kW</td><td>in der Regel nein</td><td>in der Regel nein</td></tr>
+          <tr><td>B1</td><td>100 kW bis unter 1 MW</td><td>ja</td><td>ausgewählte Punkte</td></tr>
+          <tr><td>B2</td><td>1 MW bis unter 30 MW</td><td>ja</td><td>größerer Umfang</td></tr>
+          <tr><td>C</td><td>30 MW bis unter 75 MW</td><td>ja</td><td>größter Umfang</td></tr>
+          <tr><td>D</td><td>ab 75 MW oder Anschluss an 110 kV</td><td>ja</td><td>größter Umfang</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="spec-note"><b>Die Kategorie steht im Netzanschlussvertrag</b> – dieser ist immer maßgeblich.</p>
+    <p class="spec-note"><b>Achtung bei den Einheiten:</b> die kWp der Module sind nicht die Größe, nach der sich die Kategorie richtet. Maßgeblich ist die Nennwirkleistung der Erzeugungsanlage – 698 kWp Module können eine Anlage mit P<sub>n</sub> 550 kW sein.</p>
+  </div>
+</section>
+<section class="block" id="cesty">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Kernidee</p>
+      <h2>Drei Wege, eine Anforderung nachzuweisen</h2>
+    </div>
+    <div class="services">
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Vor-Ort-Prüfung</h3>
+        <div class="body"><p>Nachweis an der fertigen Anlage und Prüfprotokoll. Manche Anforderungen lassen sich anders nicht belegen.</p></div>
+      </article>
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-6 3 3 4-7"/></svg>Simulation</h3>
+        <div class="body"><p>Modell der Anlage und Protokoll mit Bewertung. Ab Kategorie B2 ist der Umfang deutlich größer.</p></div>
+      </article>
+      <article class="svc">
+        <h3 class="hdr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 8.3-8 9.5C7.2 20.3 4 16.5 4 12V6z"/><path d="m9 12 2 2 4-4"/></svg>Anlagenzertifikat</h3>
+        <div class="body"><p>Wird von einer Zertifizierungsstelle für ein konkretes Gerät ausgestellt. Unser Prüf- oder Simulationsprotokoll ist kein Zertifikat; es ersetzt eine Prüfung nur dort, wo das Anlagendokument es zulässt.</p></div>
+      </article>
+    </div>    <div class="seg-note">
+      <p>Kategorien, Netzbetreiber, Fristen und Unterlagen beschreiben wir ausführlich auf unserer Spezialseite.</p>
+      <a class="btn btn-primary" href="https://www.simulacni-zkousky.cz/" target="_blank" rel="noopener">Zu simulacni-zkousky.cz</a>
+    </div>
+  </div>
+</section>
+<section class="block" id="faq">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Ptáte se</p>
+      <h2>Häufige Fragen</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Braucht eine Anlage unter 100 kW eine Prüfung?</summary>
+        <div class="answer"><p>Anlagen der Kategorien A1 und A2 werden in der Regel über Dokumentation und Anlagenzertifikat nachgewiesen, nicht über Vor-Ort-Prüfungen. Entscheidend sind der Netzanschlussvertrag und die aktuellen Regeln des Netzbetreibers.</p></div>
+      </details>
+      <details>
+        <summary>Was brauchen Sie von uns für den Start?</summary>
+        <div class="answer"><p>Netzanschlussvertrag, einpoliges Schema, Datenblätter von Wechselrichtern und Schutzeinrichtungen sowie die Schutzparameter. Für Prüfungen vereinbaren wir zusätzlich einen Termin, an dem die Anlage einige Stunden frei gefahren werden kann.</p></div>
+      </details>
+      <details>
+        <summary>Übernehmen Sie auch die Abstimmung mit dem Netzbetreiber?</summary>
+        <div class="answer"><p>Ja. Wir bereiten die Nachweise in der geforderten Form auf und klären Rückfragen bis zur Freigabe der Anlage.</p></div>
+      </details>
+      <details>
+        <summary>Gilt für Batteriespeicher dasselbe?</summary>
+        <div class="answer"><p>Ein Speicher wird ebenfalls als Erzeugungsanlage bewertet, der Nachweis umfasst beide Leistungsrichtungen – Laden und Entladen.</p></div>
+      </details>
+    </div>
+  </div>
+</section><section class="block">
+  <div class="container">
+    <div class="crosslinks">
+      <span class="t">Verwandte Seiten</span>
+      <a href="de-leistungen.html">Leistungen</a>
+      <a href="de-batteriespeicher.html">Batteriespeicher</a>
+      <a href="de-referenzen.html">Referenzen</a>
+    </div>
+  </div>
+</section>
+<section class="contact-section" id="poptavka">
+  <div class="bg"><picture>
+    <source type="image/webp" srcset="assets/title-photo-1024.webp 1024w, assets/title-photo.webp 2048w" sizes="(max-width: 980px) 100vw, 33vw">
+    <img src="assets/title-photo.jpg" alt="" aria-hidden="true" loading="lazy" width="2048" height="1536" srcset="assets/title-photo-1024.jpg 1024w, assets/title-photo.jpg 2048w" sizes="(max-width: 980px) 100vw, 33vw">
+  </picture></div>
+  <div class="container contact-grid">
+    <div class="contact-aside">
+      <p class="eyebrow">Anfrage</p>
+      <h2>Sie haben ein Projekt?<br>Reden wir darüber.</h2>
+      <p>Sie suchen einen Partner oder eine zweite Meinung? Schreiben Sie uns, worum es geht – wir antworten innerhalb von zwei Arbeitstagen.</p>
+      <div class="quick">
+        <a href="tel:+420776111100">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.35 1.79.68 2.64a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.44-1.25a2 2 0 0 1 2.11-.45c.85.33 1.74.56 2.64.68A2 2 0 0 1 22 16.92z"/></svg></span>
+          +420 776 111 100
+        </a>
+        <a href="mailto:info@bfksystems.cz">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+          info@bfksystems.cz
+        </a>
+      </div>
+      <div class="firm">
+        <b>BFK Systems s.r.o.</b><br>
+        Obchodní 455/12, Děčín V-Rozbělesy, 405 02 Děčín<br>
+        Firmen-ID (IČO) 23571853 · USt-IdNr. CZ23571853
+      </div>
+    </div>
+    <div class="contact-form-card">
+      <h3 style="margin:0 0 14px;font-size:20px;color:#222">Was uns hilft</h3>
+      <p style="margin:0 0 18px;font-size:15px">Je mehr wir vorab wissen, desto genauer ist unsere Antwort. Nützlich sind Standort, Leistung der Anlage oder des Speichers, der Verteilnetzbetreiber und Ihr Wunschtermin.</p>
+      <a class="btn btn-primary" href="de-kontakt.html#formular">Zum Anfrageformular</a>
+    </div>
+  </div>
+</section>
+</main>
+<!-- PATICKA DE -->
+<footer class="site">
+  <div class="container grid">
+    <div class="logo-cell">
+      <picture>
+          <source type="image/webp" srcset="assets/bfk-logo-white-210.webp 210w, assets/bfk-logo-white-420.webp 420w" sizes="150px">
+          <img src="assets/bfk-logo-white-420.png" alt="BFK Systems s.r.o." width="420" height="170" srcset="assets/bfk-logo-white-210.png 210w, assets/bfk-logo-white-420.png 420w" sizes="150px">
+        </picture>
+      <span class="foot-claim">Partner für große PV-Projekte und Batteriespeicher in ganz Tschechien.</span>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <div><span class="lbl">Tel</span><a href="tel:+420776111100" style="display:inline">+420 776 111 100</a></div>
+      <div><span class="lbl">Mail</span><a href="mailto:info@bfksystems.cz" style="display:inline">info@bfksystems.cz</a></div>
+      <div style="margin-top:10px">Obchodní 455/12<br>Děčín V-Rozbělesy<br>405 02 Děčín</div>
+      <div style="margin-top:10px">Firmen-ID (IČO) 23571853<br>USt-IdNr. CZ23571853</div>
+    </div>
+    <div>
+      <h4>Leistungen</h4>
+      <a href="de-leistungen.html#commissioning">Inbetriebnahme von PV-Anlagen</a>
+      <a href="de-leistungen.html#rizeni">Leitstellenanbindung und Regelleistung</a>
+      <a href="de-leistungen.html#vn">Mittelspannung und Trafostationen</a>
+      <a href="de-leistungen.html#fve">Gewerbliche und große PV-Anlagen</a>
+      <a href="de-leistungen.html#servis">Service und Wartung</a>
+      <a href="de-netzkonformitaet.html">Netzkonformität</a>
+      <a href="de-batteriespeicher.html">Batteriespeicher</a>
+    </div>
+    <div>
+      <h4>Unternehmen</h4>
+      <a href="de-referenzen.html">Referenzen</a>
+      <a href="de-ueber-uns.html">Über uns</a>
+      <a href="de-kontakt.html">Kontakt</a>
+      <h4 class="dalsi">Unsere Websites</h4>
+      <a href="https://www.simulacni-zkousky.cz/" target="_blank" rel="noopener">simulacni-zkousky.cz</a>
+      <a href="https://www.bftechnology.cz/" target="_blank" rel="noopener">bftechnology.cz</a>
+    </div>
+  </div>
+  <div class="copy">
+    <div class="container row">
+      <span>© <span id="year">2026</span> BFK Systems s.r.o. – alle Rechte vorbehalten</span>
+      <span><a href="de-datenschutz.html">Datenschutz</a></span>
+      <span>www.bfksystems.cz</span>
+    </div>
+  </div>
+</footer>
+
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<script src="assets/nav.js"></script>
+
+</body>
+</html>
