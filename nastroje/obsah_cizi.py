@@ -599,7 +599,7 @@ STRANKY.append({
 })
 
 EN_FORMULAR = (
-    "Tell us what you are solving.",
+    "Tell us about your project.",
     "The more we know up front, the more precise our answer is.",
     "Name", "Company", "E-mail", "Phone", "Topic", "Message",
     "Site location, plant or storage capacity, distribution operator, target date…",

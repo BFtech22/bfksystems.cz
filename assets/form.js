@@ -1,13 +1,44 @@
-// Odeslani poptavkoveho formulare.
+// Odeslani poptavkoveho formulare (ceska, anglicka i nemecka verze).
 //
 // Formular posila JSON pres fetch(), takze navstevnik zustane na strance.
 // Pole "redirect" ve formulari je zalozni cesta pro prohlizec bez JavaScriptu —
 // tam probehne klasicky POST a navrat zpet s ?sent=1.
 //
-// Access key je v HTML formulare (kontakt.html), ne tady.
+// Access key je v HTML formulare, ne tady.
+//
+// Hlasky i predmet se ridi jazykem stranky (<html lang>). Hodnoty poli ctememe
+// pres ID (f-name, f-email, …), protoze atribut name je v kazdem jazyce jiny —
+// jde totiz rovnou do e-mailu jako popisek radku.
 
-const OK_MSG = 'Děkujeme! Poptávka odešla. Ozveme se do dvou pracovních dnů.';
-const ERR_MSG = 'Odeslání se nepodařilo. Zkuste to prosím znovu, nebo nám zavolejte na +420 776 111 100.';
+const JAZYK = (document.documentElement.lang || 'cs').slice(0, 2);
+
+const HLASKY = {
+  cs: {
+    ok: 'Děkujeme! Poptávka odešla. Ozveme se do dvou pracovních dnů.',
+    chyba: 'Odeslání se nepodařilo. Zkuste to prosím znovu, nebo nám zavolejte na +420 776 111 100.',
+    odesilam: 'Odesílám…',
+    predmet: 'Poptávka bfksystems.cz',
+  },
+  en: {
+    ok: 'Thank you! Your enquiry has been sent. We reply within two working days.',
+    chyba: 'Sending failed. Please try again, or call us on +420 776 111 100.',
+    odesilam: 'Sending…',
+    predmet: 'Enquiry bfksystems.cz',
+  },
+  de: {
+    ok: 'Danke! Ihre Anfrage ist abgeschickt. Wir antworten innerhalb von zwei Arbeitstagen.',
+    chyba: 'Das Senden ist fehlgeschlagen. Bitte versuchen Sie es erneut oder rufen Sie uns an: +420 776 111 100.',
+    odesilam: 'Wird gesendet…',
+    predmet: 'Anfrage bfksystems.cz',
+  },
+}[JAZYK] || null;
+
+const T = HLASKY || {
+  ok: 'Děkujeme! Poptávka odešla. Ozveme se do dvou pracovních dnů.',
+  chyba: 'Odeslání se nepodařilo. Zkuste to prosím znovu, nebo nám zavolejte na +420 776 111 100.',
+  odesilam: 'Odesílám…',
+  predmet: 'Poptávka bfksystems.cz',
+};
 
 // Stav po navratu z externi sluzby (varianta bez JavaScriptu).
 (function stavZUrl() {
@@ -17,24 +48,22 @@ const ERR_MSG = 'Odeslání se nepodařilo. Zkuste to prosím znovu, nebo nám z
   if (!el) return;
   const ok = params.get('sent') === '1';
   el.className = ok ? 'ok' : 'err';
-  el.textContent = ok ? OK_MSG : ERR_MSG;
+  el.textContent = ok ? T.ok : T.chyba;
   el.scrollIntoView({ block: 'center' });
 })();
 
-// Nazvy poli jdou do e-mailu tak, jak jsou napsana ve formulari (proto cesky).
 // Predmet a reply-to doplnujeme az pred odeslanim, at jde notifikace rovnou
 // zodpovedet zakaznikovi a v predmetu je videt, o co jde.
 function doplnMetadata(form) {
-  const hodnota = (n) => (form.querySelector(`[name="${n}"]`)?.value || '').trim();
+  const podle = (id) => (form.querySelector(`#${id}`)?.value || '').trim();
   const nastav = (n, v) => { const el = form.querySelector(`input[name="${n}"]`); if (el && v) el.value = v; };
 
-  const jmeno = hodnota('Jméno a příjmení');
-  const misto = hodnota('Místo realizace');
-  const zajem = hodnota('Zájem o');
+  const jmeno = podle('f-name');
+  const zajem = podle('f-zajem') || podle('f-topic');   // cesky f-zajem, EN/DE f-topic
+  const misto = podle('f-misto');                        // jen ceska verze
 
-  nastav('replyto', hodnota('E-mail'));
-  nastav('subject', ['Poptávka bfksystems.cz', zajem, misto, jmeno]
-    .filter(Boolean).join(' – '));
+  nastav('replyto', podle('f-email'));
+  nastav('subject', [T.predmet, zajem, misto, jmeno].filter(Boolean).join(' – '));
 }
 
 (function odeslani() {
@@ -45,7 +74,7 @@ function doplnMetadata(form) {
   const key = form.querySelector('input[name="access_key"]');
 
   if (!key || key.value.startsWith('PLACEHOLDER')) {
-    console.warn('[simulacni-zkousky] Access key formuláře není vyplněný — formulář nic neodešle. '
+    console.warn('[bfksystems] Access key formuláře není vyplněný — formulář nic neodešle. '
       + 'Doplň ho v nastroje/obsah.py (FORMULAR) a spusť build.');
   }
 
@@ -53,7 +82,7 @@ function doplnMetadata(form) {
     e.preventDefault();
     const popisek = button.textContent;
     button.disabled = true;
-    button.textContent = 'Odesílám…';
+    button.textContent = T.odesilam;
     status.className = '';
     status.textContent = '';
 
@@ -71,17 +100,17 @@ function doplnMetadata(form) {
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.success) {
         status.className = 'ok';
-        status.textContent = OK_MSG;
+        status.textContent = T.ok;
         form.reset();
       } else {
         status.className = 'err';
-        status.textContent = ERR_MSG;
-        console.warn('[simulacni-zkousky] Odpověď služby:', res.status, data);
+        status.textContent = T.chyba;
+        console.warn('[bfksystems] Odpověď služby:', res.status, data);
       }
     } catch (err) {
       status.className = 'err';
-      status.textContent = ERR_MSG;
-      console.warn('[simulacni-zkousky] Odeslání selhalo:', err);
+      status.textContent = T.chyba;
+      console.warn('[bfksystems] Odeslání selhalo:', err);
     } finally {
       button.disabled = false;
       button.textContent = popisek;
