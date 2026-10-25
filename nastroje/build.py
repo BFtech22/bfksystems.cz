@@ -56,7 +56,7 @@ NAV_EN = [
     ("Services", "sluzby", [
         ("Services overview", "en-services.html"),
         ("PV commissioning", "en-services.html#commissioning"),
-        ("Dispatch control and balancing", "en-services.html#rizeni"),
+        ("Remote control and balancing services", "en-services.html#rizeni"),
         ("MV switchgear and substations", "en-services.html#vn"),
         ("Commercial and utility-scale PV", "en-services.html#fve"),
         ("Service and maintenance", "en-services.html#servis"),
@@ -101,7 +101,7 @@ POZICE = {"cs": 0, "en": 1, "de": 2}
 
 # Popisky sablony v jednotlivych jazycich (menu, paticka, vyzva ke kontaktu).
 TEXTY = {
-    "cs": {"jazyk": "Jazyk", "nav": "Hlavní navigace", "uvod": "Úvod",
+    "cs": {"faq": "Ptáte se", "jazyk": "Jazyk", "nav": "Hlavní navigace", "uvod": "Úvod",
            "cta": "Nezávazná poptávka", "cta_kratky": "Poptávka",
            "otevrit": "Otevřít menu", "zavrit": "Zavřít menu",
            "uvodni_stranka": "BFK Systems – úvodní stránka",
@@ -110,7 +110,7 @@ TEXTY = {
            "nase_weby": "Naše weby", "prava": "všechna práva vyhrazena",
            "zasady": "Zásady zpracování osobních údajů", "souvisejici": "Související stránky",
            "ico": "IČO", "dic": "DIČ", "zeme": "Česká republika"},
-    "en": {"jazyk": "Language", "nav": "Main navigation", "uvod": "Home",
+    "en": {"faq": "You asked", "jazyk": "Language", "nav": "Main navigation", "uvod": "Home",
            "cta": "Request a quote", "cta_kratky": "Enquiry",
            "otevrit": "Open menu", "zavrit": "Close menu",
            "uvodni_stranka": "BFK Systems – home",
@@ -119,7 +119,7 @@ TEXTY = {
            "nase_weby": "Our websites", "prava": "all rights reserved",
            "zasady": "Privacy policy", "souvisejici": "Related pages",
            "ico": "Company ID", "dic": "VAT ID", "zeme": "Czech Republic"},
-    "de": {"jazyk": "Sprache", "nav": "Hauptnavigation", "uvod": "Startseite",
+    "de": {"faq": "Sie fragen", "jazyk": "Sprache", "nav": "Hauptnavigation", "uvod": "Startseite",
            "cta": "Unverbindliche Anfrage", "cta_kratky": "Anfrage",
            "otevrit": "Menü öffnen", "zavrit": "Menü schließen",
            "uvodni_stranka": "BFK Systems – Startseite",
@@ -362,7 +362,8 @@ def prosty_text(html_text: str) -> str:
     return re.sub(r"\s+([,.;:!?)])", r"\1", t).strip()
 
 
-def faq_blok(polozky: list[tuple[str, str]], nadpis: str = "Časté dotazy") -> tuple[str, str]:
+def faq_blok(polozky: list[tuple[str, str]], nadpis: str = "Časté dotazy",
+             jazyk: str = "cs") -> tuple[str, str]:
     """Akordeon + JSON-LD FAQPage."""
     if not polozky:
         return "", ""
@@ -378,7 +379,7 @@ def faq_blok(polozky: list[tuple[str, str]], nadpis: str = "Časté dotazy") -> 
     blok = f"""<section class="block" id="faq">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">Ptáte se</p>
+      <p class="eyebrow">{TEXTY[jazyk]["faq"]}</p>
       <h2>{nadpis}</h2>
     </div>
     <div class="faq">
@@ -454,7 +455,8 @@ def stranka(p: dict) -> str:
     if p.get("breadcrumb") is not None and slug != domovska(jazyk):
         bc_html, bc_ld = drobecky(p.get("breadcrumb", []), p.get("bc_nazev", p["h1"]), jazyk)
 
-    faq_html, faq_ld = faq_blok(p.get("faq", []), p.get("faq_nadpis", "Časté dotazy"))
+    faq_html, faq_ld = faq_blok(p.get("faq", []), p.get("faq_nadpis", "Časté dotazy"),
+                                p.get("jazyk", "cs"))
 
     ldjson = ""
     specialni = [organizace(), web()] if slug == "index.html" else []

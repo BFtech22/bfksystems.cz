@@ -53,7 +53,7 @@ def sekce(nadpis, telo, eyebrow=None, uvod=None, alt=False, kotva=None):
             f'{hlavicka}{telo}\n  </div>\n</section>\n')
 
 
-def karty(polozky, sloupce=2):
+def karty(polozky, sloupce=2, vice="Otevřít →"):
     """polozky = [(ikona, nadpis, html_telo, odkaz|None)]"""
     kusy = []
     for p in polozky:
@@ -64,7 +64,7 @@ def karty(polozky, sloupce=2):
             kusy.append(
                 f'      <a class="svc" href="{odkaz}"{cil}>\n'
                 f'        <h3 class="hdr">{ikona}{nadpis}</h3>\n'
-                f'        <div class="body">{telo}<span class="go">Otevřít →</span></div>\n'
+                f'        <div class="body">{telo}<span class="go">{vice}</span></div>\n'
                 f'      </a>')
         else:
             kusy.append(

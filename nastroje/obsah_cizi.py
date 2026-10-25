@@ -12,7 +12,16 @@ vysvetli, co ten pojem znamena, nez aby se prelozil doslova.
 
 from __future__ import annotations
 
-from obsah import I, callout, cta, foto, karty, kotvy, sekce, seznam, tabulka
+from obsah import I, callout, cta, foto, kotvy, sekce, seznam, tabulka
+from obsah import karty as _karty
+
+
+def karty_en(polozky, sloupce=2):
+    return _karty(polozky, sloupce, "Open →")
+
+
+def karty_de(polozky, sloupce=2):
+    return _karty(polozky, sloupce, "Mehr →")
 
 STRANKY: list[dict] = []
 
@@ -153,11 +162,11 @@ STRANKY.append({
         "Request a quote", "en-contact.html#formular", "Our services", "en-services.html",
     ) + sekce(
         "What we specialise in",
-        karty([
+        karty_en([
             (I["blesk"], "PV commissioning",
-             "<p>Professional commissioning of utility-scale photovoltaic plants, including all "
-             "tests and electrical inspections.</p>", "en-services.html#commissioning"),
-            (I["rizeni"], "Dispatch control and balancing",
+             "<p>Professional commissioning of utility-scale photovoltaic plants, including functional "
+             "testing and electrical safety inspections.</p>", "en-services.html#commissioning"),
+            (I["rizeni"], "Remote plant control and balancing services",
              "<p>Control and telemetry systems that connect your plant to the distribution "
              "operator and to balancing markets.</p>", "en-services.html#rizeni"),
             (I["tovarna"], "MV switchgear and substations",
@@ -170,7 +179,7 @@ STRANKY.append({
              "<p>Compliance of generating modules with grid code requirements – by simulation, "
              "by on-site testing or by equipment certificate.</p>", "en-grid-compliance.html"),
             (I["baterie"], "Battery storage",
-             "<p>Commissioning, control by spot prices, integration with PV and proof of "
+             "<p>Commissioning, control based on spot market prices, integration with PV and proof of "
              "compliance for storage facilities.</p>", "en-battery-storage.html"),
         ], sloupce=3),
         eyebrow="Services",
@@ -178,7 +187,7 @@ STRANKY.append({
              'battery storage, with a reach across the whole Czech Republic.</p>',
     ) + sekce(
         "Why clients work with us",
-        karty([
+        karty_en([
             (I["sit"], "The engineering side under one roof",
              "<p>Commissioning, dispatch control, MV works and compliance evidence come from one "
              "team, so nothing falls between suppliers.</p>"),
@@ -225,17 +234,17 @@ STRANKY.append({
         "documentation.</p>"
         + seznam(["commissioning of inverters, transformers and protection relays",
                   "settings according to the connection conditions of the grid operator",
-                  "electrical inspection and commissioning records",
+                  "electrical safety inspection and commissioning records",
                   "handover documentation and training of the operator"]),
         eyebrow="Commissioning", kotva="commissioning",
     ) + sekce(
-        "Dispatch control and balancing",
+        "Remote plant control and balancing services",
         "<p>We implement control and telemetry systems that let the plant follow the distribution "
         "operator, the market, or both.</p>"
         + seznam(["RTU and control system for MV plants (Weidmüller components)",
                   "connection of the plant to the distribution operator's dispatch centre",
                   "SCADA, control of heating and charging stations",
-                  "control by spot prices",
+                  "control based on spot market prices",
                   "participation in balancing services and aggregation"]),
         eyebrow="Control", kotva="rizeni", alt=True,
     ) + sekce(
@@ -259,7 +268,7 @@ STRANKY.append({
         eyebrow="PV plants", kotva="fve", alt=True,
     ) + sekce(
         "Compliance testing and grid code",
-        karty([
+        karty_en([
             (I["graf"], "Compliance simulation",
              "<p>A model of the plant in DIgSILENT PowerFactory and the set of studies the "
              "operator requires.</p>"),
@@ -275,12 +284,12 @@ STRANKY.append({
         eyebrow="RfG", kotva="rfg",
     ) + sekce(
         "Battery storage",
-        karty([
+        karty_en([
             (I["baterie"], "Commissioning",
              "<p>We put the storage system into operation, including the battery management "
              "system and the link to the inverters.</p>"),
             (I["rizeni"], "Control and PV integration",
-             "<p>Charging by spot prices, use of surplus production, peak shaving.</p>"),
+             "<p>Charging based on spot market prices, use of surplus production, peak shaving.</p>"),
             (I["graf"], "Compliance",
              "<p>Storage is a generating module too – we provide the evidence for both "
              "directions of power flow.</p>"),
@@ -290,7 +299,7 @@ STRANKY.append({
         eyebrow="Storage", kotva="bess", alt=True,
     ) + sekce(
         "Service and maintenance",
-        karty([
+        karty_en([
             (I["klic"], "Technicians across Czechia",
              "<p>Our own service team, not a subcontracted one.</p>"),
             (I["hodiny"], "Response when it stops",
@@ -319,7 +328,7 @@ STRANKY.append({
                       ("Three routes", "cesty"), ("Questions", "faq")]),
     "body": sekce(
         "What we do for you",
-        karty([
+        karty_en([
             (I["graf"], "Compliance simulation",
              "<p>A model of the plant in DIgSILENT PowerFactory and the studies required by the "
              "distribution operator, with a pass / fail assessment.</p>"),
@@ -355,7 +364,7 @@ STRANKY.append({
         eyebrow="Rules", kotva="kategorie", alt=True,
     ) + sekce(
         "Three routes to proving a requirement",
-        karty([
+        karty_en([
             (I["lupa"], "On-site test",
              "<p>Verification on the finished plant and a test report. Some requirements cannot "
              "be proven in any other way.</p>"),
@@ -408,11 +417,11 @@ STRANKY.append({
                       ("Adding storage to an existing plant", "doplneni"), ("Questions", "faq")]),
     "body": sekce(
         "What we do for storage systems",
-        karty([
+        karty_en([
             (I["blesk"], "Commissioning",
              "<p>Putting the system into operation including the battery management system, "
              "inverters and protection devices.</p>"),
-            (I["cena"], "Control by spot prices",
+            (I["cena"], "Control based on spot market prices",
              "<p>Charging when electricity is cheap, discharging when it is expensive – with "
              "limits that respect the connection agreement.</p>"),
             (I["panel"], "Integration with photovoltaics",
@@ -507,7 +516,7 @@ STRANKY.append({
     "body": sekce("Projects", galerie(EN_GALERIE), eyebrow="Our work")
     + sekce(
         "Compliance verification",
-        karty([
+        karty_en([
             (I["graf"], "PV plant, category D",
              "<p>Simulations and on-site testing for a plant connected at 110 kV.</p>"),
             (I["lupa"], "PV plant, category B1",
@@ -539,7 +548,7 @@ STRANKY.append({
              "grid connection, control and compliance.</p>",
     "body": sekce(
         "Our team",
-        karty([
+        karty_en([
             (I["clovek"], "Bc. Petr Fencl",
              "<p>Commissioning, control systems and grid compliance. Leads the technical side of "
              "projects.</p>"),
@@ -551,7 +560,7 @@ STRANKY.append({
         eyebrow="People",
     ) + sekce(
         "What sets us apart",
-        karty([
+        karty_en([
             (I["tovarna"], "Large and demanding projects",
              "<p>Medium-voltage plants, container storage and substations – work that needs grid "
              "code knowledge.</p>"),
@@ -565,7 +574,7 @@ STRANKY.append({
         alt=True,
     ) + sekce(
         "Part of the BF technology group",
-        karty([
+        karty_en([
             (I["graf"], "simulacni-zkousky.cz",
              "<p>A dedicated team for RfG compliance – simulations, on-site testing and "
              "negotiations with distribution operators.</p>", WEB_SZ),
@@ -615,7 +624,7 @@ STRANKY.append({
              "below – it reaches the same inbox.</p>",
     "body": sekce(
         "Contact details",
-        karty([
+        karty_en([
             (I["info"], "BFK Systems s.r.o.",
              "<p>Obchodní 455/12<br>Děčín V-Rozbělesy<br>405 02 Děčín<br>Czech Republic</p>"
              "<p>Company ID 23571853<br>VAT ID CZ23571853</p>"),
@@ -706,10 +715,10 @@ STRANKY.append({
         "Unverbindliche Anfrage", "de-kontakt.html#formular", "Unsere Leistungen", "de-leistungen.html",
     ) + sekce(
         "Unsere Schwerpunkte",
-        karty([
+        karty_de([
             (I["blesk"], "Inbetriebnahme von PV-Anlagen",
-             "<p>Professionelle Inbetriebnahme großer Photovoltaikanlagen samt aller Prüfungen "
-             "und Revisionen.</p>", "de-leistungen.html#commissioning"),
+             "<p>Professionelle Inbetriebnahme großer Photovoltaikanlagen samt Funktionsprüfungen "
+             "und elektrischen Sicherheitsprüfungen.</p>", "de-leistungen.html#commissioning"),
             (I["rizeni"], "Leitstellenanbindung und Regelleistung",
              "<p>Steuerungs- und Fernwirktechnik, die Ihre Anlage mit dem Verteilnetzbetreiber "
              "und den Regelleistungsmärkten verbindet.</p>", "de-leistungen.html#rizeni"),
@@ -731,7 +740,7 @@ STRANKY.append({
              'Photovoltaik sowie Batteriespeicher – mit Einsatzgebiet in ganz Tschechien.</p>',
     ) + sekce(
         "Warum Kunden mit uns arbeiten",
-        karty([
+        karty_de([
             (I["sit"], "Technik aus einer Hand",
              "<p>Inbetriebnahme, Leitstellenanbindung, Mittelspannung und Konformitätsnachweis "
              "kommen aus einem Team – nichts fällt zwischen die Gewerke.</p>"),
@@ -778,7 +787,7 @@ STRANKY.append({
         "Übergabedokumentation.</p>"
         + seznam(["Inbetriebnahme von Wechselrichtern, Trafos und Schutzrelais",
                   "Parametrierung nach den Anschlussbedingungen des Netzbetreibers",
-                  "Revision und Inbetriebnahmeprotokolle",
+                  "elektrische Sicherheitsprüfung und Inbetriebnahmeprotokolle",
                   "Übergabedokumentation und Einweisung des Betreibers"]),
         eyebrow="Inbetriebnahme", kotva="commissioning",
     ) + sekce(
@@ -812,7 +821,7 @@ STRANKY.append({
         eyebrow="PV-Anlagen", kotva="fve", alt=True,
     ) + sekce(
         "Netzkonformität und Prüfungen",
-        karty([
+        karty_de([
             (I["graf"], "Simulation",
              "<p>Modell der Anlage in DIgSILENT PowerFactory und die vom Netzbetreiber "
              "geforderten Studien.</p>"),
@@ -828,7 +837,7 @@ STRANKY.append({
         eyebrow="RfG", kotva="rfg",
     ) + sekce(
         "Batteriespeicher",
-        karty([
+        karty_de([
             (I["baterie"], "Inbetriebnahme",
              "<p>Wir nehmen den Speicher in Betrieb, inklusive Batteriemanagement und Anbindung "
              "an die Wechselrichter.</p>"),
@@ -843,7 +852,7 @@ STRANKY.append({
         eyebrow="Speicher", kotva="bess", alt=True,
     ) + sekce(
         "Service und Wartungsverträge",
-        karty([
+        karty_de([
             (I["klic"], "Techniker in ganz Tschechien",
              "<p>Eigenes Serviceteam, keine Subunternehmer.</p>"),
             (I["hodiny"], "Reaktion im Störfall",
@@ -873,7 +882,7 @@ STRANKY.append({
                       ("Drei Wege", "cesty"), ("Fragen", "faq")]),
     "body": sekce(
         "Was wir für Sie übernehmen",
-        karty([
+        karty_de([
             (I["graf"], "Simulation",
              "<p>Modell der Anlage in DIgSILENT PowerFactory und die vom Netzbetreiber "
              "geforderten Studien mit Bewertung erfüllt / nicht erfüllt.</p>"),
@@ -909,7 +918,7 @@ STRANKY.append({
         eyebrow="Regeln", kotva="kategorie", alt=True,
     ) + sekce(
         "Drei Wege, eine Anforderung nachzuweisen",
-        karty([
+        karty_de([
             (I["lupa"], "Vor-Ort-Prüfung",
              "<p>Nachweis an der fertigen Anlage und Prüfprotokoll. Manche Anforderungen lassen "
              "sich anders nicht belegen.</p>"),
@@ -962,7 +971,7 @@ STRANKY.append({
                       ("Nachrüstung", "doplneni"), ("Fragen", "faq")]),
     "body": sekce(
         "Was wir für Speicher übernehmen",
-        karty([
+        karty_de([
             (I["blesk"], "Inbetriebnahme",
              "<p>Inbetriebnahme samt Batteriemanagement, Wechselrichtern und "
              "Schutzeinrichtungen.</p>"),
@@ -1063,7 +1072,7 @@ STRANKY.append({
     "body": sekce("Projekte", galerie(DE_GALERIE), eyebrow="Unsere Arbeit")
     + sekce(
         "Konformitätsnachweise",
-        karty([
+        karty_de([
             (I["graf"], "PV-Anlage, Kategorie D",
              "<p>Simulationen und Vor-Ort-Prüfungen für eine Anlage am 110-kV-Netz.</p>"),
             (I["lupa"], "PV-Anlage, Kategorie B1",
@@ -1095,7 +1104,7 @@ STRANKY.append({
              "Herausforderung ist, sondern Netzanschluss, Steuerung und Nachweise.</p>",
     "body": sekce(
         "Unser Team",
-        karty([
+        karty_de([
             (I["clovek"], "Bc. Petr Fencl",
              "<p>Inbetriebnahme, Steuerungstechnik und Netzkonformität. Leitet die technische "
              "Seite der Projekte.</p>"),
@@ -1107,7 +1116,7 @@ STRANKY.append({
         eyebrow="Menschen",
     ) + sekce(
         "Was uns unterscheidet",
-        karty([
+        karty_de([
             (I["tovarna"], "Große und anspruchsvolle Projekte",
              "<p>Anlagen auf Mittelspannung, Container-Speicher und Trafostationen – Arbeiten, "
              "die Kenntnis der Netzregeln verlangen.</p>"),
@@ -1121,7 +1130,7 @@ STRANKY.append({
         alt=True,
     ) + sekce(
         "Teil der Gruppe BF technology",
-        karty([
+        karty_de([
             (I["graf"], "simulacni-zkousky.cz",
              "<p>Spezialisiertes Team für Netzkonformität – Simulationen, Vor-Ort-Prüfungen und "
              "Abstimmung mit Verteilnetzbetreibern.</p>", WEB_SZ),
@@ -1172,7 +1181,7 @@ STRANKY.append({
              "nutzen Sie das Formular – es landet im selben Postfach.</p>",
     "body": sekce(
         "Kontaktdaten",
-        karty([
+        karty_de([
             (I["info"], "BFK Systems s.r.o.",
              "<p>Obchodní 455/12<br>Děčín V-Rozbělesy<br>405 02 Děčín<br>Tschechische "
              "Republik</p><p>Firmen-ID 23571853<br>USt-IdNr. CZ23571853</p>"),
