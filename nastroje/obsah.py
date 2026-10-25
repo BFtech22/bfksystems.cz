@@ -783,7 +783,7 @@ FORMULAR = """<section class="contact-section" id="poptavka">
       <div id="contact-status" role="status"></div>
       <!-- Odesila se pres fetch(), pole "redirect" je zalozni cesta bez JavaScriptu. -->
       <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="post" autocomplete="on">
-        <input type="hidden" name="access_key" value="cff8b062-f31e-4d4b-b506-4d7ff73abbfc">
+        <input type="hidden" name="access_key" value="b79c115b-13f5-45f9-85d0-7595a0e4b21b">
         <input type="hidden" name="subject" value="Nová poptávka z webu bfksystems.cz">
         <input type="hidden" name="from_name" value="Poptávkový formulář bfksystems.cz">
         <input type="hidden" name="replyto" value="">
