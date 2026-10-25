@@ -1332,6 +1332,14 @@ nav.primary a.header-cta .dlouhy::after { content: " →"; }
   background-size: 32px 32px;
 }
 .hero .photo img { position: absolute; inset: 0; }
+
+/* Stridani fotek v banneru — snimky lezi na sobe, prolina se pruhlednost.
+   Viditelny je ten s tridou "je-videt", prepina assets/hero.js. */
+.hero .photo .snimek { opacity: 0; transition: opacity 1.1s ease; }
+.hero .photo .snimek.je-videt { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .hero .photo .snimek { transition: none; }
+}
 .hero .gradient-overlay { display: none; }
 .hero .content {
   grid-column: 1; grid-row: 1; width: auto; max-width: none; margin: 0;

@@ -219,10 +219,20 @@ STRANKY = []
 # =========================================================== DOMOVSKA ======
 HERO = """<!-- HERO -->
 <section class="hero">
-  <div class="photo"><picture>
-    <source type="image/webp" srcset="assets/title-photo-1024.webp 1024w, assets/title-photo.webp 2048w" sizes="100vw">
-    <img src="assets/title-photo.jpg" alt="Fotovoltaická elektrárna na průmyslové střeše" width="2048" height="1536" fetchpriority="high" srcset="assets/title-photo-1024.jpg 1024w, assets/title-photo.jpg 2048w" sizes="100vw">
-  </picture></div>
+  <div class="photo">
+    <picture>
+      <source type="image/webp" srcset="assets/title-photo-1024.webp 1024w, assets/title-photo.webp 2048w" sizes="100vw">
+      <img class="snimek je-videt" src="assets/title-photo.jpg" alt="Fotovoltaická elektrárna na průmyslové střeše" width="2048" height="1536" fetchpriority="high" srcset="assets/title-photo-1024.jpg 1024w, assets/title-photo.jpg 2048w" sizes="100vw">
+    </picture>
+    <picture>
+      <source type="image/webp" srcset="assets/hero-2-1024.webp 1024w, assets/hero-2.webp 2000w" sizes="100vw">
+      <img class="snimek" src="assets/hero-2.jpg" alt="Panely pozemní fotovoltaické elektrárny při západu slunce" width="2000" height="1125" loading="lazy" srcset="assets/hero-2-1024.jpg 1024w, assets/hero-2.jpg 2000w" sizes="100vw">
+    </picture>
+    <picture>
+      <source type="image/webp" srcset="assets/hero-3-1024.webp 1024w, assets/hero-3.webp 1600w" sizes="100vw">
+      <img class="snimek" src="assets/hero-3.jpg" alt="Montážní tým BFK Systems před dokončenou pozemní elektrárnou" width="1600" height="1200" loading="lazy" srcset="assets/hero-3-1024.jpg 1024w, assets/hero-3.jpg 1600w" sizes="100vw">
+    </picture>
+  </div>
   <div class="gradient-overlay"></div>
   <div class="content">
     <p class="hero-eyebrow">BFK Systems &middot; experti na velké FVE projekty</p>
@@ -235,6 +245,7 @@ HERO = """<!-- HERO -->
     </div>
   </div>
 </section>
+<script src="assets/hero.js" defer></script>
 """
 
 STRANKY.append({
