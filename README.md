@@ -5,8 +5,8 @@ rekonstrukce VN a trafostanic, komerční a velké FVE, bateriová úložiště,
 (ověření souladu s RfG) a servis. Statický web bez backendu.
 
 Nahrazuje původní jednostránkový web (Tailwind, přepínač CS/EN/DE, formulář přes
-`send_email.php`). Zatím **jen česky** – angličtina a němčina přijdou po schválení
-českého obsahu.
+`send_email.php`). Hotové jsou všechny tři jazyky – česká, anglická a německá verze
+mají po osmi stránkách a jsou provázané přes `hreflang`.
 
 Komponenty, písmo a titulní fotka jsou převzaté z webu **simulacni-zkousky.cz**
 (`../simulacni-zkousky`): oranžová `#F08A00`, Roboto hostované na webu (`assets/fonts/`,
@@ -26,7 +26,8 @@ verzálek, ostré rohy a ikony v tmavých čtvercích. V hlavičce a patičce je
 python3 nastroje/build.py                 # vygeneruje všechny .html + sitemap.xml
 python3 nastroje/kontrola.py              # odkazy, kotvy, meta, JSON-LD, verzálky, zastaralé formulace
 python3 nastroje/kontrola.py --externi    # navíc ověří externí odkazy (chodí na síť)
-python3 nastroje/kontrola.py --produkce   # před spuštěním: bez PLACEHOLDER, robots bez Disallow, CNAME
+python3 nastroje/kontrola.py --produkce   # před nasazením: bez PLACEHOLDER, robots bez Disallow,
+                                          # .htaccess, otisky podpisů, nic ze serveru, žádný CNAME
 python3 nastroje/obrazky.py               # fotky referencí a favicon (po výměně originálů)
 ```
 
@@ -47,11 +48,15 @@ python3 nastroje/obrazky.py               # fotky referencí a favicon (po vým�
 │   ├── reference/    # fotky referencí: -800 (výřez 4 : 3) a -1600, WebP + JPG
 │   ├── bfk-logo*, bfk-znacka-*, favicon*
 │   └── title-photo*  # titulní fotka (stejná jako na simulacni-zkousky.cz)
+├── .github/workflows/
+│   └── deploy-webglobe.yml  # nasazení na Webglobe přes SFTP
 ├── podklady/         # originály fotek (v .gitignore, až 4,5 MB na fotku)
+├── LOGO.png          # ← obrázky e-mailových podpisů, neměnit ani nepřejmenovávat
+├── podpis/           #   (hlídá je kontrola.py přes SHA-256)
 ├── index.html … 404.html   # GENEROVANÉ
 ├── sitemap.xml       # GENEROVANÁ
-├── robots.txt        # ZATÍM ZAKAZUJE indexaci (staging)
-└── CNAME.disabled    # www.bfksystems.cz – aktivovat až při spuštění
+├── .htaccess         # GENEROVANÝ (404 a pořadí úvodních souborů)
+└── robots.txt        # indexaci povoluje
 ```
 
 ## Struktura webu
@@ -65,7 +70,7 @@ python3 nastroje/obrazky.py               # fotky referencí a favicon (po vým�
 | O nás | `o-nas.html` | mise, tým (texty z původního webu), co nás odlišuje, skupina BF technology, firemní údaje |
 | Kontakt | `kontakt.html` | kontakty, poptávkový formulář, fakturační údaje |
 | mimo menu | `index.html`, `zasady-zpracovani-osobnich-udaju.html`, `404.html` | |
-| přepínač CS / EN / DE | `en.html`, `de.html` | zástupné stránky „verzi připravujeme“ s přehledem služeb a kontaktem (noindex, mimo sitemap); až budou překlady, nahradí je plné verze |
+| přepínač CS / EN / DE | `en*.html`, `de*.html` | plné anglické a německé verze všech osmi stránek, provázané přes `hreflang` |
 
 Úvodní stránka má sekce Služby, Simulační zkoušky, Bateriová úložiště, Reference,
 Servis a O nás. Texty o RfG jsou převzaté z ověřeného webu simulacni-zkousky.cz – když se
@@ -78,13 +83,43 @@ to hlídá.
 **Fotky referencí:** originály jsou v `podklady/reference-original`. Výřez 4 : 3 se u vysokých
 fotek nastavuje ručně v `nastroje/obrazky.py` (střed výřezu), aby zůstalo vidět to podstatné.
 
-## Před spuštěním je potřeba dořešit
+## Nasazení
 
-1. **Klíč poptávkového formuláře.** V `nastroje/obsah.py` (`FORMULAR`) je
-   `PLACEHOLDER-DOPLNIT-KLIC-WEB3FORMS`. Ve Web3Forms založit formulář s příjemcem
-   `info@bfksystems.cz` (adresu je potřeba nejdřív propojit a ověřit) a klíč doplnit.
-2. **Hosting a DNS.** Současný web běží na 195.181.248.157 (nginx), DNS je u Webglobe.
-   Nový web může jít na GitHub Pages stejně jako simulacni-zkousky.cz.
-3. **robots.txt** přepnout podle komentáře v souboru, `CNAME.disabled` přejmenovat na `CNAME`.
-4. **Zásady zpracování osobních údajů** – datum účinnosti nastavit na den spuštění.
-5. **`python3 nastroje/kontrola.py --produkce` musí projít.**
+Web běží na hostingu **Webglobe** (`195.181.248.157`) pod `bfksystems.cz`
+i `www.bfksystems.cz`, DNS je u Webglobe a mění ho Petr. GitHub slouží jen k vývoji.
+Nasazuje GitHub Actions (`.github/workflows/deploy-webglobe.yml`) přes **SFTP na portu 222**
+do `public_html/`. GitHub Pages jsou vypnuté, náhled se pouští lokálně:
+
+```bash
+python3 -m http.server 8765      # v kořeni webu
+```
+
+Spuštění: **Actions → „Nasazení na Webglobe" → Run workflow**. Přepínač `dry_run`
+jen vypíše, co by se nahrálo. Workflow nejdřív spustí `kontrola.py --produkce`, ověří
+otisk klíče serveru a pak nahraje soubory přes `lftp mirror -R`.
+
+**Deploy nikdy nic nemaže** – `--delete` se do `mirror` nesmí přidat. V `public_html/`
+leží vedle webu věci, které v repozitáři nejsou a být nesmí:
+
+| Na serveru mimo repozitář | Proč |
+|---|---|
+| `RfG/` | portál simulací a zkoušek, v `RfG/p/…/docs/` jsou protokoly zákazníků |
+| `dotaznik/` | živý dotazník včetně odpovědí |
+| `send_email.php`, `PHPMailer/` | formulář starého webu |
+| `REFERENCE/`, `index.php`, `hero2_up.jpg` | starý web, uklidí se až na pokyn |
+
+`RfG/` ani `dotaznik/` **nikdy nedávej do repozitáře** – a to i kdyby byl soukromý.
+`kontrola.py --produkce` jejich přítomnost hlásí jako chybu a nasazení neproběhne.
+
+**Hesla nepatří do repozitáře ani do logu.** Přihlášení k SFTP je v GitHub Secrets
+(`SFTP_USERNAME`, `SFTP_PASSWORD`), veřejné klíče serveru v proměnné `SFTP_KNOWN_HOSTS`.
+Ověřování klíče serveru se nevypíná a na nešifrované FTP se nepřechází.
+
+**`LOGO.png` a `podpis/*.png`** jsou obrázky e-mailových podpisů. Odkazují na ně
+už odeslané zprávy, takže se nesmí přejmenovat ani změnit – `kontrola.py --produkce`
+kontroluje jejich SHA-256. Poznámky k nim patří sem do README, ne do `podpis/`:
+cokoli v té složce je veřejně na webu.
+
+Formulář zatím odesílá přes Web3Forms. Nahradí ho vlastní zpracování na Webglobe
+(samostatný úkol), pak je potřeba upravit i zásady zpracování osobních údajů ve všech
+třech jazycích.

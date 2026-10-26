@@ -2,7 +2,8 @@
 """Kontrola vygenerovaneho webu bfksystems.cz pred publikaci (prevzato z webu simulacni-zkousky.cz).
 
     python3 nastroje/kontrola.py              # bezna kontrola (staging)
-    python3 nastroje/kontrola.py --produkce   # navic: zadny PLACEHOLDER, robots bez Disallow: /, CNAME
+    python3 nastroje/kontrola.py --produkce   # navic: zadny PLACEHOLDER, robots bez Disallow: /,
+                                              # .htaccess, otisky podpisu, nic z Webglobe, zadny CNAME
     python3 nastroje/kontrola.py --externi    # navic: dostupnost externich odkazu (chodi na sit)
 
 Hlida odkazy a kotvy, zakladni meta, jeden H1, canonical, parovani tagu, sitemap,
@@ -11,6 +12,7 @@ datum aktualizace na odbornych strankach a to, ze web nenacita nic z cizich serv
 (fonty, styly, skripty) a vsechny soubory z CSS existuji.
 """
 
+import hashlib
 import html
 import json
 import re
@@ -25,6 +27,19 @@ STARI_AKTUALIZACE_DNU = 183
 
 CHYBY = []
 UPOZORNENI = []
+
+# Obrazky e-mailovych podpisu. Odkazuji na ne odeslane maily, takze se nesmi
+# zmenit ani prejmenovat; v repozitari jsou proto, aby web sel nasadit kamkoli.
+OTISKY_PODPISU = {
+    "LOGO.png": "17a3783ff339fa5223da4d82f4aece2837eb8d679af5b6fc12f3c372c8f385d7",
+    "podpis/bfk_linkedin.png": "7b824c3b761220cbc2a77e18cb847360af5b9c5483e67d7e5b176328aff0c9d4",
+    "podpis/bft_facebook.png": "41f81283ce2697f45d3e3e26f4efe30b03fb2831612d00713ec61f91c656b263",
+    "podpis/bft_instagram.png": "1bda5c83fb27eb8657bdf4b2f43671584fb29d8525cb21a1c2e21059fc8ebe99",
+}
+
+# Na Webglobe lezi vedle webu dokumenty zakazniku (protokoly, odpovedi dotazniku)
+# a PHP s nastavenim posty. Repozitar je verejny, takze tam nic z toho nepatri.
+MIMO_REPOZITAR = ["RfG", "dotaznik", "PHPMailer", "send_email.php"]
 
 # Formulace, ktere se v minulych kolech oprav na web vracely: (vzor, spravne).
 ZAKAZANE = [
@@ -110,6 +125,10 @@ def zkontroluj_stranku(cesta, jmena):
         soubor, _, kotva = href.partition("#")
         if not soubor:
             continue
+        # Cesta od korene webu (ma ji 404.html, aby fungovala i v podslozce)
+        # ukazuje na stejny soubor jako cesta od korene repozitare.
+        if soubor.startswith("/") and not soubor.startswith("//"):
+            soubor = soubor[1:]
         if soubor.endswith(".html"):
             if soubor not in jmena:
                 chyba(jmeno, f"odkaz na neexistující stránku {soubor}")
@@ -230,8 +249,19 @@ def zkontroluj_produkci(stranky, produkce):
             chyba("robots.txt", "zakazuje indexaci celého webu (Disallow: /)")
         if bez_sitemapy:
             chyba("robots.txt", f"chybí řádek Sitemap: {DOMENA}/sitemap.xml")
-        if not (KOREN / "CNAME").exists():
-            chyba("CNAME", "chybí — přejmenuj CNAME.disabled, až doména míří na hosting")
+        if (KOREN / "CNAME").exists():
+            chyba("CNAME", "web běží na Webglobe, ne na GitHub Pages — soubor smaž")
+        if not (KOREN / ".htaccess").exists():
+            chyba(".htaccess", "chybí — generuje ho nastroje/build.py")
+        for jmeno, otisk in OTISKY_PODPISU.items():
+            soubor = KOREN / jmeno
+            if not soubor.exists():
+                chyba(jmeno, "chybí — obrázek používají e-mailové podpisy")
+            elif hashlib.sha256(soubor.read_bytes()).hexdigest() != otisk:
+                chyba(jmeno, "jiný obsah, než na který odkazují odeslané podpisy (SHA-256 nesedí)")
+        for jmeno in MIMO_REPOZITAR:
+            if (KOREN / jmeno).exists():
+                chyba(jmeno, "patří jen na server — v repozitáři by byly dokumenty zákazníků")
     return zakazano
 
 

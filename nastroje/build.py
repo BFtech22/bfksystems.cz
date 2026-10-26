@@ -634,6 +634,45 @@ def posledni_zmena(slug: str, dnes: str) -> str:
         return dnes
 
 
+# Apache na Webglobe. Vedle webu z repozitare tam lezi RfG portal, dotaznik
+# a stary formular, deploy je nesmi prepsat. Soubor proto resi jen vlastni
+# chybovou stranku a poradi uvodnich souboru - v public_html/ zustava i stary
+# index.php, ktery by jinak mohl vyhrat nad novym index.html.
+HTACCESS = """# bfksystems.cz na Webglobe. Nasazuje GitHub Actions (SFTP) z repozitáře BFtech22/bfksystems.cz.
+# Generuje nastroje/build.py – needituj ručně.
+# RfG/, dotaznik/, PHPMailer/, send_email.php jsou na serveru mimo repozitář – nemazat.
+# HTTP -> HTTPS přesměrovává hosting, tady se neřeší.
+DirectoryIndex index.html index.php
+ErrorDocument 404 /404.html
+"""
+
+
+def absolutni_odkazy(kod: str) -> str:
+    """Cesty od korene pro stranku 404.
+
+    Chybova stranka se zobrazi i na adrese typu /RfG/neexistuje. Relativni odkaz
+    by se tam hledal v podslozce, takze by zmizel styl i obrazky a menu by vedlo
+    na neexistujici stranky.
+    """
+    def od_korene(adresa: str) -> str:
+        if re.match(r"^(?:[a-zA-Z][\w+.-]*:|//|/|#|\?)", adresa):
+            return adresa
+        return "/" + adresa
+
+    def srcset(m: re.Match) -> str:
+        polozky = []
+        for kus in m.group(1).split(","):
+            kus = kus.strip()
+            if not kus:
+                continue
+            adresa, _, popis = kus.partition(" ")
+            polozky.append(" ".join(filter(None, (od_korene(adresa), popis.strip()))))
+        return 'srcset="' + ", ".join(polozky) + '"'
+
+    kod = re.sub(r'srcset="([^"]+)"', srcset, kod)
+    return re.sub(r'\b(href|src)="([^"]+)"', lambda m: f'{m.group(1)}="{od_korene(m.group(2))}"', kod)
+
+
 def sitemap(stranky: list[dict]) -> str:
     dnes = date.today().isoformat()
     radky = []
@@ -662,11 +701,15 @@ def main() -> None:
 
     for p in stranky:
         cil = KOREN / p["slug"]
-        cil.write_text(stranka(p), encoding="utf-8")
+        kod = stranka(p)
+        if p["slug"] == "404.html":
+            kod = absolutni_odkazy(kod)
+        cil.write_text(kod, encoding="utf-8")
         print(f"  {p['slug']:42s} {cil.stat().st_size // 1024:3d} kB")
 
     (KOREN / "sitemap.xml").write_text(sitemap(stranky), encoding="utf-8")
-    print(f"\n{len(stranky)} stránek + sitemap.xml")
+    (KOREN / ".htaccess").write_text(HTACCESS, encoding="utf-8")
+    print(f"\n{len(stranky)} stránek + sitemap.xml + .htaccess")
 
 
 if __name__ == "__main__":

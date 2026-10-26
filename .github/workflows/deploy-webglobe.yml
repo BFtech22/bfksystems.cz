@@ -1,0 +1,86 @@
+name: Nasazení na Webglobe
+
+# Web běží na hostingu Webglobe, GitHub slouží jen k vývoji. Workflow nahrává
+# obsah repozitáře do public_html/ přes SFTP (port 222). Nikdy nic nemaže:
+# vedle webu tam leží RfG portál, dotazník a starý formulář, které v repozitáři
+# nejsou. Trigger push se zapne až po prvním ostrém nasazení (K4).
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Jen vypsat, co by se nahrálo"
+        type: boolean
+        default: true
+  # push: { branches: [main] }   # zapnout až po K4
+
+concurrency: { group: deploy-webglobe, cancel-in-progress: false }
+permissions: { contents: read }
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      DRY: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
+        with: { python-version: "3.12" }
+
+      - name: Kontrola před nasazením
+        run: python3 nastroje/kontrola.py --produkce
+
+      - name: Klíč serveru Webglobe (SFTP, port 222)
+        env:
+          KNOWN_HOSTS: ${{ vars.SFTP_KNOWN_HOSTS }}
+        run: |
+          if [ -z "$KNOWN_HOSTS" ]; then
+            echo "::error::Chybí proměnná SFTP_KNOWN_HOSTS (viz K2 v zadání)"; exit 1
+          fi
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          ssh-keygen -lf ~/.ssh/known_hosts      # otisky musí odpovídat K2
+
+      - name: Instalace lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Upload SFTP (jen nahrává, nic nemaže)
+        env:
+          LFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+          SFTP_USER: ${{ secrets.SFTP_USERNAME }}
+        run: |
+          DRYFLAG=""; [ "$DRY" = "true" ] && DRYFLAG="--dry-run"
+          # NIKDY nepřidávat --delete. Chráněné cesty jsou v exclude jako pojistka.
+          # Port je i v connect-programu: lftp ho do ssh nepředává ve všech verzích.
+          lftp -c "
+            set sftp:connect-program 'ssh -a -x -p 222 -o StrictHostKeyChecking=yes';
+            set net:max-retries 2; set net:timeout 30;
+            open --env-password -u \"$SFTP_USER\" -p 222 sftp://ftp.bfksystems.cz;
+            mirror -R --verbose --no-perms --parallel=4 $DRYFLAG \
+              --exclude-glob .git/ --exclude-glob '.git*' --exclude-glob .github/ \
+              --exclude-glob nastroje/ --exclude-glob podklady/ --exclude-glob .claude/ \
+              --exclude-glob .DS_Store --exclude-glob '._*' \
+              --exclude-glob README.md --exclude-glob CNAME --exclude-glob POZNAMKY-INTERNI.md \
+              --exclude-glob RfG/ --exclude-glob dotaznik/ --exclude-glob PHPMailer/ --exclude-glob REFERENCE/ \
+              --exclude-glob send_email.php --exclude-glob index.php \
+              ./ public_html/
+          "
+
+      - name: Kontrola na Webglobe (chráněné cesty + web)
+        if: env.DRY != 'true'
+        run: |
+          ok=1
+          chk() {
+            c=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 \
+                  --resolve "$1:443:195.181.248.157" "https://$1$2" || true)
+            echo "$c  https://$1$2 (čekám $3)"
+            [ "$c" = "$3" ] || ok=0
+          }
+          for p in / /404.html /LOGO.png /podpis/bfk_linkedin.png /podpis/bft_facebook.png \
+                   /podpis/bft_instagram.png /RfG/dashboard.html /dotaznik/; do
+            chk www.bfksystems.cz "$p" 200
+          done
+          chk bfksystems.cz /RfG/dashboard.html 200
+          chk www.bfksystems.cz /neexistuje-kontrola-deploye 404
+          [ "$ok" = 1 ] || { echo "::error::Kontrola po nasazení selhala"; exit 1; }
