@@ -1,0 +1,6 @@
+# bfksystems.cz na Webglobe. Nasazuje GitHub Actions (SFTP) z repozitáře BFtech22/bfksystems.cz.
+# Generuje nastroje/build.py – needituj ručně.
+# RfG/, dotaznik/, PHPMailer/, send_email.php jsou na serveru mimo repozitář – nemazat.
+# HTTP -> HTTPS přesměrovává hosting, tady se neřeší.
+DirectoryIndex index.html index.php
+ErrorDocument 404 /404.html
