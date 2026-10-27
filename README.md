@@ -104,9 +104,8 @@ leží vedle webu věci, které v repozitáři nejsou a být nesmí:
 | Na serveru mimo repozitář | Proč |
 |---|---|
 | `RfG/` | portál simulací a zkoušek, v `RfG/p/…/docs/` jsou protokoly zákazníků |
-| `dotaznik/` | živý dotazník včetně odpovědí |
 | `send_email.php`, `PHPMailer/` | formulář starého webu |
-| `REFERENCE/`, `index.php`, `hero2_up.jpg` | starý web, uklidí se až na pokyn |
+| `REFERENCE/`, `index.php`, `hero2_up.jpg` | starý web, smaže Petr po nasazení |
 
 `RfG/` ani `dotaznik/` **nikdy nedávej do repozitáře** – a to i kdyby byl soukromý.
 `kontrola.py --produkce` jejich přítomnost hlásí jako chybu a nasazení neproběhne.

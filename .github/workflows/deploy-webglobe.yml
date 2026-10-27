@@ -78,7 +78,7 @@ jobs:
             [ "$c" = "$3" ] || ok=0
           }
           for p in / /404.html /LOGO.png /podpis/bfk_linkedin.png /podpis/bft_facebook.png \
-                   /podpis/bft_instagram.png /RfG/dashboard.html /dotaznik/; do
+                   /podpis/bft_instagram.png /RfG/dashboard.html; do
             chk www.bfksystems.cz "$p" 200
           done
           chk bfksystems.cz /RfG/dashboard.html 200
