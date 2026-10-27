@@ -1,0 +1,100 @@
+name: Úklid starého webu na Webglobe
+
+# Samostatné workflow k jednorázovému úklidu public_html/ po přechodu na nový web.
+# Nasazení (deploy-webglobe.yml) nemaže nic a mazat nikdy nebude — mazání je jen tady,
+# ručně a s potvrzením. Výchozí stav je nanečisto: vypíše, co by zmizelo, a skončí.
+#
+# Co se NIKDY nemaže:
+#   RfG/        portál simulací a zkoušek, jsou v něm dokumenty zákazníků
+#   .well-known/ ověřování certifikátů a podobné služby
+# podpis/ a LOGO.png jsou v repozitáři, takže je mirror nemaže ani nemůže.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Jen vypsat, co by se smazalo"
+        type: boolean
+        default: true
+      potvrzeni:
+        description: "Pro ostré mazání napiš SMAZAT (jinak nech prázdné)"
+        type: string
+        default: ""
+
+concurrency: { group: deploy-webglobe, cancel-in-progress: false }
+permissions: { contents: read }
+
+jobs:
+  uklid:
+    runs-on: ubuntu-latest
+    env:
+      DRY: ${{ inputs.dry_run }}
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
+        with: { python-version: "3.12" }
+
+      - name: Pojistky
+        env:
+          POTVRZENI: ${{ inputs.potvrzeni }}
+        run: |
+          python3 nastroje/kontrola.py --produkce
+          # Prázdný nebo rozbitý checkout by s --delete smazal celý web.
+          pocet=$(git ls-files | grep -vE '^(nastroje|podklady|\.github)/' | wc -l)
+          echo "Souborů webu v repozitáři: $pocet"
+          [ -f index.html ] || { echo "::error::chybí index.html"; exit 1; }
+          [ "$pocet" -ge 50 ] || { echo "::error::jen $pocet souborů, to nesedí — nemažu"; exit 1; }
+          if [ "$DRY" != "true" ] && [ "$POTVRZENI" != "SMAZAT" ]; then
+            echo "::error::Ostré mazání vyžaduje potvrzeni = SMAZAT"; exit 1
+          fi
+
+      - name: Klíč serveru Webglobe (SFTP, port 222)
+        env:
+          KNOWN_HOSTS: ${{ vars.SFTP_KNOWN_HOSTS }}
+        run: |
+          if [ -z "$KNOWN_HOSTS" ]; then
+            echo "::error::Chybí proměnná SFTP_KNOWN_HOSTS"; exit 1
+          fi
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          ssh-keygen -lf ~/.ssh/known_hosts
+
+      - name: Instalace lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Co by se smazalo
+        env:
+          LFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+          SFTP_USER: ${{ secrets.SFTP_USERNAME }}
+        run: |
+          DRYFLAG=""; [ "$DRY" = "true" ] && DRYFLAG="--dry-run"
+          lftp -c "
+            set sftp:connect-program 'ssh -a -x -p 222 -o StrictHostKeyChecking=yes';
+            set net:max-retries 2; set net:timeout 30;
+            open --env-password -u \"$SFTP_USER\" -p 222 sftp://ftp.bfksystems.cz;
+            mirror -R --delete --verbose --no-perms --parallel=4 $DRYFLAG \
+              --exclude-glob RfG/ --exclude-glob .well-known/ \
+              --exclude-glob .git/ --exclude-glob '.git*' --exclude-glob .github/ \
+              --exclude-glob nastroje/ --exclude-glob podklady/ --exclude-glob .claude/ \
+              --exclude-glob .DS_Store --exclude-glob '._*' \
+              --exclude-glob README.md --exclude-glob CNAME --exclude-glob POZNAMKY-INTERNI.md \
+              ./ public_html/
+          " > /tmp/lftp.log 2>&1 || { echo "::error::lftp skončilo chybou"; grep -vi 'password' /tmp/lftp.log | tail -20; exit 1; }
+          # Jen skutečné mazání (rm/rmdir), ne přepisy souborů při nahrávání.
+          grep -E '^(rm|rmdir) ' /tmp/lftp.log \
+            | sed -E 's#^(rm|rmdir) .*/public_html/?##' | sed '/^$/d' | sort > /tmp/smaze.txt
+          rfg=$(grep -c '^RfG/' /tmp/smaze.txt || true)
+          echo "Ke smazání celkem: $(wc -l < /tmp/smaze.txt)"
+          echo "Z toho pod RfG/:   $rfg   (musí být 0)"
+          if [ "$rfg" != "0" ]; then
+            echo "::error::Vyloučení RfG/ nefunguje — výpis nevypisuji, jsou v něm cesty k dokumentům zákazníků"
+            exit 1
+          fi
+          echo "--- podle adresářů ---"
+          sed 's#/[^/]*$##; s#^[^/]*$#(kořen)#' /tmp/smaze.txt | sort | uniq -c | sort -rn
+          echo "--- seznam ---"
+          cat /tmp/smaze.txt
+          if [ "$DRY" = "true" ]; then
+            echo "Nanečisto: na serveru se nic nezměnilo."
+          fi
