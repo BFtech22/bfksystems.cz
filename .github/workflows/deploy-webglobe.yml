@@ -12,7 +12,7 @@ on:
         description: "Jen vypsat, co by se nahrálo"
         type: boolean
         default: true
-  # push: { branches: [main] }   # zapnout až po K4
+  # push: { branches: [main] }   # vědomě vypnuté, nasazuje se ručně (28. 10. 2026)
 
 concurrency: { group: deploy-webglobe, cancel-in-progress: false }
 permissions: { contents: read }

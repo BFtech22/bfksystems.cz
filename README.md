@@ -98,14 +98,20 @@ Spuštění: **Actions → „Nasazení na Webglobe" → Run workflow**. Přepí
 jen vypíše, co by se nahrálo. Workflow nejdřív spustí `kontrola.py --produkce`, ověří
 otisk klíče serveru a pak nahraje soubory přes `lftp mirror -R`.
 
+**Nasazuje se ručně.** Automatické nasazení při pushi do `main` je vědomě vypnuté
+(rozhodnuto 28. 10. 2026) – push samotný web nezmění, dokud někdo nespustí workflow.
+
 **Deploy nikdy nic nemaže** – `--delete` se do `mirror` nesmí přidat. V `public_html/`
 leží vedle webu věci, které v repozitáři nejsou a být nesmí:
 
 | Na serveru mimo repozitář | Proč |
 |---|---|
 | `RfG/` | portál simulací a zkoušek, v `RfG/p/…/docs/` jsou protokoly zákazníků |
-| `send_email.php`, `PHPMailer/` | formulář starého webu |
-| `REFERENCE/`, `index.php`, `hero2_up.jpg` | starý web, smaže Petr po nasazení |
+| `.well-known/` | ověřování certifikátů |
+
+Zbytek starého webu (`REFERENCE/`, `PHPMailer/`, `send_email.php`, `index.php`,
+`hero2_up.jpg`, `favicon48_48_komprimovano.ico`) byl **28. 10. 2026 smazán**,
+`dotaznik/` smazal Petr před nasazením.
 
 `RfG/` ani `dotaznik/` **nikdy nedávej do repozitáře** – a to i kdyby byl soukromý.
 `kontrola.py --produkce` jejich přítomnost hlásí jako chybu a nasazení neproběhne.
